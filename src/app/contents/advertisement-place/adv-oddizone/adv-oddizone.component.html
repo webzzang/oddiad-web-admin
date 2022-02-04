@@ -1,0 +1,4 @@
+<div class="main-scroll">
+  <app-adv-oddizone-list #advOddizoneList (moveMngEvent) ="moveMngEventHandler($event)"  [ngClass]="{'dp-none': activePageType != pageType.LIST}" ></app-adv-oddizone-list>
+  <app-adv-oddizone-mng  #advOddizoneMng  (moveListEvent)="moveListEventHandler($event)" [ngClass]="{'dp-none': activePageType != pageType.FORM}"></app-adv-oddizone-mng>
+</div>

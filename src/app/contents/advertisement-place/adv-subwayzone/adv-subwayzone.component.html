@@ -1,0 +1,4 @@
+<div class="main-scroll">
+  <app-adv-subwayzone-list #advSubwayzoneList (moveMngEvent) ="moveMngEventHandler($event)"  [ngClass]="{'dp-none': activePageType != pageType.LIST}" ></app-adv-subwayzone-list>
+  <app-adv-subwayzone-mng  #advSubwayzoneMng  (moveListEvent)="moveListEventHandler($event)" [ngClass]="{'dp-none': activePageType != pageType.FORM}"></app-adv-subwayzone-mng>
+</div>

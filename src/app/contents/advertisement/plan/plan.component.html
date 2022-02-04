@@ -1,0 +1,4 @@
+<div class="main-scroll">
+  <app-plan-list #planList (moveMngEvent) ="moveMngEventHandler($event)"  [ngClass]="{'dp-none': activePageType != pageType.LIST}"></app-plan-list>
+  <app-plan-mng  #planMng  (moveListEvent)="moveListEventHandler($event)" [ngClass]="{'dp-none': activePageType != pageType.FORM}"></app-plan-mng>
+</div>

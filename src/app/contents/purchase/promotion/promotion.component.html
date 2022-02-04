@@ -1,0 +1,12 @@
+<div class="main-scroll">
+  <app-promotion-list #promotionList
+                      (movePromotionMngEvent)    ="movePromotionMngEventHandler($event)"
+                      (moveSignupcouponMngEvent) ="moveSignupMngEventHandler()"
+                      [ngClass]="{'dp-none': activePageType != pageType.LIST}"></app-promotion-list>
+  <app-promotion-mng  #promotionMng
+                      (moveListEvent)="moveListEventHandler($event)"
+                      [ngClass]="{'dp-none': activePageType != pageType.FORM}"></app-promotion-mng>
+  <app-signupcoupon-mng #signupcouponMng
+                        (moveListEvent)="moveListEventHandler($event)"
+                        [ngClass]="{'dp-none': activePageType != pageType.FORM2}"></app-signupcoupon-mng>
+</div>

@@ -1,0 +1,218 @@
+<div class="box-row-nwr" [style.width.px]="hostWidthPx">
+
+  <!-- 검색명 -->
+  <div class="box-row-nwr flex-center-middle search-input-title" [style.width.px]="fieldInfo.nameWidth"
+    *ngIf="fieldInfo.nameWidth">{{fieldInfo.displayName}}</div>
+
+  <!--_TEXT-->
+  <ng-template [ngIf]="fieldInfo.inputType == _TEXT">
+    <div style="margin-top:5px;" class="ml5">
+      <input type="text" [placeholder]="fieldInfo.placeHolder" class="input-text-box" [id]="fieldInfo.id"
+        [(ngModel)]="userInput" [style.width.px]="fieldInfo.width" [ngClass]="{'w100p-i': fieldInfo.width == undefined}"
+        (blur)="onInputChange($event)" (keyup)="onKey($event)" [disabled]="fieldInfo.disabled"
+        [required]="fieldInfo.required" />
+    </div>
+
+    <!--
+    <ng-template [ngIf]="fieldInfo.lineBreak">
+      <div [style.width.px]="fieldInfo.lineBreakWidth"></div>
+    </ng-template>
+  -->
+  </ng-template>
+
+  <ng-template [ngIf]="fieldInfo.inputType == _SELECT">
+    <div class="input-group form-row ml5" style="margin-right: 0px; margin-left: 0px;"
+      [style.width.px]="fieldInfo.width" [ngClass]="{'w100p-i': fieldInfo.width == undefined}">
+      <div style="margin-bottom:0px !important;">
+        <select class="custom-select-sm" [id]="fieldInfo.id" [(ngModel)]="userInput"
+          (ngModelChange)="onInputChange($event)" [style.width.px]="fieldInfo.width"
+          [ngClass]="{'w100p-i': fieldInfo.width == undefined}" [disabled]="fieldInfo.disabled" #searchSelect>
+          <option *ngIf="!fieldInfo.required" [value]="''" label="{{totalTranslateCode | translate}}">
+          </option>
+          <option *ngFor="let option of fieldInfo.options" [label]="option.name" [value]="option.value">
+          </option>
+        </select>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- select + text -->
+  <ng-template [ngIf]="fieldInfo.inputType == _SELTEXT">
+    <div class="input-group form-row ml5" [style.width.px]="fieldInfo.width"
+      [ngClass]="{'w100p': fieldInfo.width == undefined}">
+      <div style="margin-bottom:0px !important;">
+        <select class="custom-select-sm" [id]="fieldInfo.selectId" [ngClass]="fieldInfo.class" [(ngModel)]="userInput"
+          (ngModelChange)="onInputChange({type: 'select', value: $event})" isDateRange [disabled]="fieldInfo.disabled" #searchSelect>
+          <option *ngIf="!fieldInfo.required" [value]="''" label="{{totalTranslateCode | translate}}">
+          </option>
+          <option *ngFor="let option of fieldInfo.options" [text]="option.name" [value]="option.value">
+          </option>
+        </select>
+        <input type="text" [placeholder]="placeholder" class="input-text-box ml5" [id]="fieldInfo.inputId"
+          [(ngModel)]="userInputText" (blur)="onInputChange({type:'input', value: userInputText})" (keyup)="onKey($event)"
+          [disabled]="fieldInfo.disabled || selTextDisable || fieldInfo.selTextAllDisable"
+          [required]="fieldInfo.required" />
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- select + daterange + radio -->
+  <ng-template [ngIf]="fieldInfo.inputType == _SEL_DATERANGE_RADIO">
+    <div class="input-daterange input-group form-row" id="datepicker-range" [style.width.px]="fieldInfo.width"
+         [ngClass]="{'w100p-i': fieldInfo.width == undefined}" style="margin-right: 0px; margin-left: 0px;">
+      <div style="margin-bottom:0px !important;">
+        <select class="custom-select-sm" [id]="fieldInfo.id" [ngClass]="fieldInfo.class" [(ngModel)]="userInput"
+                (ngModelChange)="onInputChange($event)" isDateRange [disabled]="fieldInfo.disabled" #searchSelect>
+          <option *ngIf="!fieldInfo.required" [value]="''" label="{{totalTranslateCode | translate}}">
+          </option>
+          <option *ngFor="let option of fieldInfo.options" [text]="option.name" [value]="option.value">
+          </option>
+        </select>
+      </div>
+      <div style="display: inline-block; width:5px;"></div>
+      <div>
+        <input type="text" class="lc_01 startInputCal" mwlFlatpickr id="schStartDateInput" [altInput]="true"
+               [altInputClass]="'form-control search-date-picker'" [locale]="locale" [placeholder]="fieldInfo.placeHolder !== undefined &&
+                  fieldInfo.placeHolder[0] !== undefined ? fieldInfo.placeHolder[0] : ''" [altFormat]="'Y-m-d'"
+               [dateFormat]="'Ymd'" [(ngModel)]="startDate" [disableMobile]="false" [allowInput]="true"
+               (ngModelChange)="onSelDateRangeChange()" readonly />
+      </div>
+      <div class="mt8 ml2 mr2">~</div>
+      <div>
+        <input type="text" class="lc_01 endInputCal" mwlFlatpickr id="schEndDateInput" [altInput]="true"
+               [altInputClass]="'form-control search-date-picker'" [locale]="locale" [placeholder]="fieldInfo.placeHolder !== undefined &&
+                  fieldInfo.placeHolder[1] !== undefined ? fieldInfo.placeHolder[1] : ''" [altFormat]="'Y-m-d'"
+               [dateFormat]="'Ymd'" [(ngModel)]="endDate" required [disableMobile]="true"
+               (ngModelChange)="onSelDateRangeChange()" readonly/>
+      </div>
+
+      <div class="custom-radio-sm">
+        <ng-container *ngFor="let option of fieldInfo.dateRangeRadioOptions; let indx = index">
+          <span
+              [ngClass]="{'radio-box mr10' : (indx+1 != fieldInfo.dateRangeRadioOptions.length), '' : (indx+1 == fieldInfo.dateRangeRadioOptions.length)}">
+            <input type="radio" [value]='option.value' [id]="option.value + '_' + currDate" [name]="currDate"
+                   class="radio-btn rangeRadio" (change)="onSelDateRangeRadioChange(option)" [disabled]="fieldInfo.disabled" [checked] = "option.checked">
+            <label [for]="option.value + '_' + currDate"><em></em>{{option.label}}</label>
+          </span>
+        </ng-container>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- radio-->
+  <ng-template [ngIf]="fieldInfo.inputType == _RADIO">
+
+    <!-- 날짜 검색조건 타입 선택 radio-->
+    <ng-template [ngIf]="fieldInfo.isDateRangeRadio">
+      <div class="custom-radio-sm">
+        <ng-container *ngFor="let option of fieldInfo.options; let indx = index">
+          <span
+            [ngClass]="{'radio-box mr10' : (indx+1 != fieldInfo.options.length), '' : (indx+1 == fieldInfo.options.length)}">
+            <input type="radio" [value]='option.value' [id]='option.name' name="fieldInfo.group"
+              class="radio-btn rangeRadio" (change)="onDateRangeRadioChange(option)" [disabled]="fieldInfo.disabled">
+            <label [for]='option.name'><em></em>{{option.name}}</label>
+          </span>
+        </ng-container>
+      </div>
+    </ng-template>
+
+    <!-- 일반적인 radio-->
+    <ng-template [ngIf]="!fieldInfo.isDateRangeRadio">
+      <div class="custom-radio-sm">
+        <ng-container *ngFor="let item of fieldInfo.options; let indx = index">
+          <span
+            [ngClass]="{'radio-box mr10' : (indx+1 != fieldInfo.options.length), '' : (indx+1 == fieldInfo.options.length)}">
+            <input type="radio" [value]='item.value' [id]='item.name' name="fieldInfo.group"
+              class="radio-btn rangeRadio" [(ngModel)]='userInput' (change)="onInputChange(item)"
+              [disabled]="fieldInfo.disabled">
+            <label [for]='item.name' class="ml10"><em></em>{{item.name}}</label>
+          </span>
+        </ng-container>
+      </div>
+    </ng-template>
+  </ng-template>
+
+  <!-- radio-->
+  <!-- 라디오 옵션이 많은 경우 width가 충분해야 하는 경우 -->
+  <ng-template [ngIf]="fieldInfo.inputType == _LONG_RADIO">
+    <div class="custom-radio-sm">
+      <ng-container *ngFor="let item of fieldInfo.options; let indx = index">
+        <span [ngClass]="{'radio-box' : (indx >= 0), 'radio-box' : (indx != 0)}">
+          <input type="radio" [value]='item.value' [id]='item.name' [(ngModel)]='userInput' name="fieldInfo.id"
+            class="radio-btn" (change)="onInputChange(item)" [disabled]="fieldInfo.disabled">
+          &nbsp;&nbsp;<label [for]='item.name'><em></em>{{item.name}}</label>
+        </span>
+      </ng-container>
+    </div>
+
+    <!--
+  <ng-template [ngIf]="fieldInfo.lineBreak">
+    <div [style.width.px]="fieldInfo.lineBreakWidth"></div>
+  </ng-template>
+  -->
+
+  </ng-template>
+
+  <!-- Checkbox -->
+  <ng-template [ngIf]="fieldInfo.inputType == _CHECK">
+    <div class="checkbox check-primary" *ngFor="let item of fieldInfo.options; let idx = index">
+      <input [name]="item.value" type='checkbox' [value]='item.value' [(ngModel)]="item.checked" [id]="item.value"
+        (change)="onInputChange(item.value)" [disabled]="fieldInfo.disabled" class="checkbox-btn">
+      <label [for]="item.value">&nbsp;{{item.name}}</label>
+    </div>
+  </ng-template>
+
+  <!-- Checkbox LONG -->
+  <ng-template [ngIf]="fieldInfo.inputType == _LONG_CHECK">
+
+    <div class="custom-radio-sm" *ngFor="let item of fieldInfo.options; let idx = index">
+      <span [ngClass]="{'radio-box' : (indx >= 0), 'radio-box' : (indx != 0)}">
+        <input [name]="item.value" type='checkbox' [value]='item.value' [(ngModel)]="item.checked" [id]="item.value"
+          (change)="onInputChange(item.value)" [disabled]="fieldInfo.disabled" class="checkbox-btn">
+        <label [for]="item.value" class="ml10">&nbsp;{{item.name}}</label>
+      </span>
+    </div>
+  </ng-template>
+
+  <!-- date picker 입력 필드 -->
+  <ng-template [ngIf]="fieldInfo.inputType == _CALENDAR && !fieldInfo.isDateRange">
+    <div class="">
+      <div>
+        <input type="text" class="lc_01" mwlFlatpickr [style.width.px]="fieldInfo.width"
+          [ngClass]="{'w100p-i': fieldInfo.width == undefined}" [altInput]="true"
+          [altInputClass]="'form-control search-date-picker'" [locale]="locale" [placeholder]="fieldInfo.placeHolder !== undefined &&
+            fieldInfo.placeHolder[0] !== undefined ? fieldInfo.placeHolder[0] : ''" [altFormat]="'Y-m-d'"
+          [(ngModel)]="startDate" (ngModelChange)="onInputChange($event)" [disableMobile]="true" />
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- date range 입력 필드 -->
+  <ng-template [ngIf]="fieldInfo.inputType == _CALENDAR && fieldInfo.isDateRange">
+    <div class="input-daterange input-group form-row" id="datepicker-range" [style.width.px]="fieldInfo.width"
+      [ngClass]="{'w100p-i': fieldInfo.width == undefined}" style="margin-right: 0px; margin-left: 0px;">
+      <div>
+        <input type="text" class="lc_01 startInputCal" mwlFlatpickr id="schStartDateInput" [altInput]="true"
+          [altInputClass]="'form-control search-date-picker'" [locale]="locale" [placeholder]="fieldInfo.placeHolder !== undefined &&
+                    fieldInfo.placeHolder[0] !== undefined ? fieldInfo.placeHolder[0] : ''" [altFormat]="'Y-m-d'"
+          [dateFormat]="'Ymd'" [(ngModel)]="startDate" [disableMobile]="false" [allowInput]="true"
+          (ngModelChange)="onInputChange($event)" />
+      </div>
+      <div class="mt8 ml2 mr2">~</div>
+      <div>
+        <input type="text" class="lc_01 endInputCal" mwlFlatpickr id="schEndDateInput" [altInput]="true"
+          [altInputClass]="'form-control search-date-picker'" [locale]="locale" [placeholder]="fieldInfo.placeHolder !== undefined &&
+                    fieldInfo.placeHolder[1] !== undefined ? fieldInfo.placeHolder[1] : ''" [altFormat]="'Y-m-d'"
+          [dateFormat]="'Ymd'" [(ngModel)]="endDate" required [disableMobile]="true"
+          (ngModelChange)="onInputChange($event)" />
+      </div>
+    </div>
+  </ng-template>
+
+
+  <!-- 버튼 박스 입력 필드 -->
+  <ng-template [ngIf]="fieldInfo.inputType == _BUTTON">
+    <button style="display:block;" class="btn btn-{{fieldInfo.format}} btn-cons" [disabled]="fieldInfo.disabled"
+      [style.width.px]="fieldInfo.width" [ngClass]="{'w100p-i': fieldInfo.width == undefined}"
+      (click)="onClickBtn()">{{fieldInfo.btnNm}}</button>
+  </ng-template>

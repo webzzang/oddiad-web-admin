@@ -1,0 +1,247 @@
+.dp-none {
+  display: none !important;
+}
+
+input, select, textarea{
+  outline: none !important;
+}
+
+input, select {
+  height: 1.7rem !important;
+}
+
+.breadcrumb {
+  background-color: rgba(245, 245, 245, 0.7) !important;
+  border-radius: 0 !important;
+}
+
+.box_search {
+    position: relative;
+    padding: 20px 30px;
+    background-color: #FDFFFF;
+    border: 1px solid #ededed;
+}
+
+.box_search.popup {
+    padding: 20px;
+}
+
+.box_search button.pc {
+    margin-top: 0 !important;
+    border: 0 solid #e6e6e6 !important;
+    min-width: 99px !important;
+    background-color: #e5e7e8 !important;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100% !important;
+}
+
+.box_search button.pc i {
+    font-size: 28px !important;
+    color: #626262 !important;
+}
+
+.box_search .btn {
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    border: none !important;
+}
+
+/* modal 관련 */
+.modal .modal-sm {
+    width: 408px !important;
+    max-width: 408px !important;
+}
+
+.modal .modal-sm .modal-body h4 {
+    font-size: 16px !important;
+    color: #2c2c2c !important;
+    font-family: NotoS_R !important;
+    line-height: 24px !important;
+    letter-spacing: -0.5px !important;
+}
+
+.modal-dialog .modal-header h5 {
+    font-size: 25px !important;
+    color: #000 !important;
+    font-family: NotoS_R !important;
+}
+
+.modal-dialog .modal-header h5.qrcode {
+    font-size: 18px !important;
+    text-align: center !important;
+    display: block !important;
+    width: 100%;
+}
+
+.modal .modal-header p {
+    font-size: 14px !important;
+    line-height: 20px !important;
+    color: #626262 !important;
+}
+
+.modal-footer {
+    justify-content: center !important;
+}
+
+.modal-footer > :not(:last-child) {
+    margin-right: 6px !important;
+}
+
+.model-confirm-msg {
+  line-height: 1.3 !important;
+  @extend .pt50-i; 
+  @extend .pb50-i ;
+  @extend .pl30-i; 
+  @extend .pr30-i; 
+  @extend .fs18;
+}
+
+.btn-cons {
+    margin-right: 6px;
+    min-width: 120px;
+}
+.btn-cons:last-child {
+    margin-right: 0;
+}
+
+
+.default-wrap {
+  position: relative;
+}
+
+.row-type {
+  @extend .mb10;
+  @extend .box-row-nwr;
+  @extend .w100p;
+  font-size: 13px;
+  min-height: 35px;
+}
+
+.title-type {
+  @extend .box-row-nwr;
+  @extend .flex-middle;
+  font-weight: bold;
+  border-bottom: 1px solid rgba(221, 221, 221, 0.7);
+  background-color: rgba(252, 252, 252, 0.7);
+}
+.title-type-center {
+  @extend .title-type;
+  @extend .flex-center;
+}
+.title-type-left {
+  @extend .title-type;
+  @extend .flex-left;
+}
+
+.cell-type {
+  @extend .box-row-nwr;
+  @extend .flex-middle;
+  @extend .box-sub-1;
+  padding: 3px 5px;
+  border-bottom: 1px solid rgba(241, 241, 241, 0.7);
+}
+.cell-type > span {
+  @extend .ml10;
+  @extend .mr10;
+}
+.cell-type-center {
+  @extend .cell-type;
+  @extend .flex-center;
+}
+.cell-type-left {
+  @extend .cell-type;
+  @extend .flex-left;
+}
+.cell-type-right {
+  @extend .cell-type;
+  @extend .flex-right;
+}
+
+
+// table {
+//   border-collapse: collapse;
+// }
+
+// table, th, td {
+//   border: 1px solid rgba(230, 230, 230, 1);
+// }
+
+.rule-test-1 {
+  background-color: sandybrown !important;
+}
+
+.rule-test-2 {
+  background-color: lightcoral !important;
+}
+
+/** search box date picker */
+.search-date-picker {
+  width: 130px !important;
+  // height: 36px !important;
+  // border-radius: 0 !important;
+  background: url('../assets/images/ico-calendar.png') no-repeat;
+  background-size: 17px;
+  background-position: 92% 50%;
+  &:avtive {
+    border: none !important;
+  };
+}
+
+.datepkLong {
+  width: 250px !important;
+  height: 46px !important;
+  font-size: 26px !important;
+  color :rgba(0, 0, 0, 1);
+  border-radius: 0 !important;
+  border: none !important;
+  background: url('../assets/images/ico-calendar.png') no-repeat;
+  background-size: 20px;
+  background-position: 92% 50%;
+  &:avtive {
+    border: none !important;
+  };
+}
+
+.datepk {
+  width: 130px !important;
+  // border-radius: 0 !important;
+  // border: none !important;
+  // border-bottom: 1px solid rgba(200, 200, 200, 1) !important;
+  background: url('../assets/images/ico-calendar.png') no-repeat;
+  background-size: 17px;
+  background-position: 92% 50%;
+  &:avtive {
+    border: none !important;
+  };
+}
+
+.f-red {
+  color: red;
+  display: inline-block;
+  padding-left: 3px;
+}
+
+.pointer {
+  cursor: pointer !important;
+}
+
+.modal-content {
+  max-width: 100% !important;
+}
+
+.Modal400px .modal-dialog {
+  max-width: 400px !important;
+  left : calc(50% - 200px);
+}
+
+.Modal600px .modal-dialog {
+  max-width: 600px !important;
+  left : calc(50% - 300px);
+}
+
+.flatpickr-disabled{
+  color:rgba(57, 57, 57, 0.3) !important;
+}
+

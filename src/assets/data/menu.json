@@ -1,0 +1,25 @@
+{
+    "id": "admin",
+    "name": "시스템 관리자",
+    "accesstoken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlcGlzb2RlLWFkbWluIiwiaWQiOiJhZG1pbiIsImV4cCI6MTYzNjQ4NTUyOX0.nOtgONLwvsT8Uimo22jvh8BQulrEh21FxTyveICkbfg",
+    "menus": [
+      {
+        "groupId": "SVC",
+        "groupName": "서비스 설정",
+        "cssName": "left-menu-06",
+        "subMenus": [
+          {
+            "menuId": "SVC006",
+            "menuName": "서브메뉴1",
+            "routerLink": "/contents/sample"
+          },
+          {
+            "menuId": "SVC003",
+            "menuName": "서브메뉴2",
+            "routerLink": "/contents/sample"
+          }
+        ]
+      }
+    ]
+
+}

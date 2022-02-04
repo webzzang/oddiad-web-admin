@@ -1,0 +1,117 @@
+body {
+  background-color: #fff !important
+}
+
+.login-wrapper {
+  background-color: #fff !important;
+}
+
+.login-wrapper .bg-pic>img {
+  height: 100%;
+  opacity: 1;
+}
+
+.login-wrapper .bg-caption_new {
+  top: 245px;
+  width: 788px;
+  padding-left: 145px !important
+}
+
+.login-wrapper .bg_text {
+  font-family: 'NotoS_M';
+  font-size: 48px;
+  color: #fff;
+  letter-spacing: -2px;
+}
+
+.txt_login {
+  display: block;
+  margin-top: 3px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #626262;
+  letter-spacing: -1px;
+}
+
+/*
+.txt_login {
+   display: block;
+   margin-bottom: 12px;
+   font-family: 'NotoS_B';
+   font-size: 16px;
+   color: #333333;
+   letter-spacing: -1px;
+}
+*/
+.justify-content-end a:first-child {
+  border-right: 1px solid #efefef;
+  padding-right: 8px;
+  margin-right: 8px;
+}
+
+.justify-content-end a:hover {
+  text-decoration: underline;
+  color: #007fc6 !important;
+}
+
+.txt1 {
+  font-size: 13px !important;
+  color: #626262 !important;
+  line-height: 16px !important;
+  margin-bottom: 6px !important;
+}
+
+.txt2 {
+  font-size: 12px !important;
+  color: #9fabc5 !important;
+  letter-spacing: -0.3px !important;
+  margin-bottom: 3px !important;
+}
+
+@media (max-width:1400px) {
+  .login-wrapper .bg-caption_new {
+    padding-left: 79px !important;
+  }
+
+  .login-wrapper .bg_text {
+
+    font-size: 34px;
+  }
+}
+
+@media screen and (max-width:480px) {
+  .txt_login {
+    font-size: 16px;
+    letter-spacing: -1px;
+  }
+
+  .txt_login img {
+    width: 290px
+  }
+
+  .txt1 {
+    letter-spacing: -0.5px !important;
+  }
+
+  .txt2 {
+    letter-spacing: -0.3px !important;
+  }
+}
+
+@media screen and (max-width:320px) {
+  .txt_login {
+    font-size: 14px;
+    letter-spacing: -1px;
+  }
+
+  .txt_login img {
+    width: 250px
+  }
+}
+
+.reminTime{
+  position:relative;
+  right:60px;
+  top:2px;
+  width:5px;
+}

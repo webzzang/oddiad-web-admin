@@ -1,0 +1,84 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">가입자 쿠폰 자동 지급</span>
+          </div>
+          <div class="table-scroll2">
+            <form role="form" #targetSignupCoupon="ngForm">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 90%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th class="required">쿠폰 이름<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <input type="text" name="promotion.name" class="input-text-box w300"
+                           required="true" maxLength="30"
+                           [(ngModel)]="promotion.name" />
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">할인<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <input type="number" name="discountPrice" class="input-text-box" style="text-align: right;"
+                           required="true" pattern="[0-9]{1,8}"
+                           [(ngModel)]="promotion.discountPrice"/> 원
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">사용 기한<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <ng-container *ngFor="let couponCode of selectLists.memberCouponCode; let index = index">
+                      <span class="radio-box mr20">
+                        <input type="radio" name="memberCouponCode" class="radio-btn" id="{{'couponCode_' + index}}"
+                               [value]="couponCode.value" [checked]="couponCode.value == promotion.memberCouponCode"
+                               [(ngModel)]="promotion.memberCouponCode">
+                        <label for="{{'couponCode_' + index}}"><em></em>{{couponCode.name}}</label>
+                        &nbsp;
+                        <span *ngIf="'MCT002' == couponCode.value && 'MCT002' == promotion.memberCouponCode">
+                        <input type="number" name="memberCouponExpiredDay" class="input-text-box w70" style="display: inline-block; text-align: right;"
+                               required="true" pattern="[0-9]{1,3}"
+                               [(ngModel)]="promotion.memberCouponExpiredDay"/> 일
+                        </span>
+                      </span>
+                    </ng-container>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">사용 여부<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <ng-container *ngFor="let usableCode of selectLists.couponUsableCode; let index = index">
+                      <span class="radio-box mr20">
+                        <input type="radio" name="usable" class="radio-btn" id="{{'usableCode_' + index}}"
+                               [value]="usableCode.value" [checked]="usableCode.value == promotion.usable"
+                               [(ngModel)]="promotion.usable">
+                        <label for="{{'usableCode_' + index}}"><em></em>{{usableCode.name}}</label>
+                      </span>
+                    </ng-container>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </form>
+          </div>
+        </div>
+
+        <div class="t-center mt20">
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="possibleRegister()"
+                  [disabled]="targetSignupCoupon.form.invalid"
+                  (click)="savePromotion()">저장</button>
+          <button type="button" class="btn btn-type-06"
+                  (click)="movePromotionList('N')">목록</button>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>

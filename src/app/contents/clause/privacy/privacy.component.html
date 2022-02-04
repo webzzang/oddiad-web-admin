@@ -1,0 +1,4 @@
+<div class="main-scroll">
+  <app-privacy-list #privacyList (moveMngEvent) ="moveMngEventHandler($event)"  [ngClass]="{'dp-none': activePageType != pageType.LIST}" ></app-privacy-list>
+  <app-privacy-mng  #privacyMng  (moveListEvent)="moveListEventHandler($event)" [ngClass]="{'dp-none': activePageType != pageType.FORM}"></app-privacy-mng>
+</div>

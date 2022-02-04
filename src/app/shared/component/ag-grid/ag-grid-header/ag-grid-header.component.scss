@@ -1,0 +1,11 @@
+.ag-grid-header-arrow {
+  width: 10px;
+  height: 6px;
+  opacity: 0.5;
+  margin-top: 2px;
+  margin-left: 5px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+}

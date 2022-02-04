@@ -1,0 +1,180 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+
+        <div class="t-center mt20 t-right">
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="possibleRegister() || possibleModify()"
+                  [disabled]="target.form.invalid"
+                  (click)="saveLivestream()">저장</button>
+          <button type="button" class="btn btn-type-06"
+                  (click)="cancel()">취소</button>
+        </div>
+
+        <form role="form" #target="ngForm">
+          <div class="mb20">
+            <div class="title-bar">
+              <span class="title-01 mr5">광고처 및 기기 정보</span>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 24%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th>채널명</th>
+                  <td>오디존 라이브스트림</td>
+                  <th class="required">채널 아이디<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="3">
+                    <input type="text" class="w-50" name="liveStreamChannelId"
+                           required="true" maxlength="30"
+                           [(ngModel)]="livestreamInfo.liveStreamChannelId">
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="mb20">
+            <div class="title-bar">
+              <span class="title-01 mr5">라이브 채널 운영 일정</span>
+              <button *ngIf="possibleRegister() || possibleModify()"
+                      class="btn btn-type-03 sm-btn f-right"
+                      (click)="addLivestream()">추가</button>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 24%;" />
+                </colgroup>
+                <tbody>
+                <tr *ngFor="let livestream of livestreamList; let index = index;">
+                  <th class="required">제목<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <input type="text" class="w-100" name="title_{{livestream.seq}}"
+                           required="true" maxlength="20"
+                           [(ngModel)]="livestream.title">
+                  </td>
+                  <th class="required">운영시간<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="3">
+                    <input type="text" class="lc_01 startInputCal" mwlFlatpickr name="datepicker_{{livestream.seq}}" readonly
+                           [altInput]="true"
+                           [altInputClass]="'form-control search-date-picker'"
+                           [altFormat]="'Y-m-d'"
+                           [locale]="datepickerLocal"
+                           [dateFormat]="'Ymd'"
+                           [(ngModel)]="livestream.operationDay"
+                           [disableMobile]="false"
+                           [allowInput]="true"
+                           required="true" />
+
+                    <span class="ml-1 mr-1"></span>
+
+                    <select name="startHour_{{livestream.seq}}"
+                            [(ngModel)]="livestream.startHour"
+                            required="true">
+                      <option *ngFor="let hour of selectLists.hours" [label]="hour" [value]="hour"></option>
+                    </select>
+                    <span class="mr-1">시</span>
+
+                    <select name="startMin_{{livestream.seq}}" [(ngModel)]="livestream.startMin"
+                            required="true">
+                      <option *ngFor="let min of selectLists.mins" [label]="min" [value]="min"></option>
+                    </select>
+                    <span class="mr-1">분</span>
+
+                    <span class="ml-1 mr-1">~</span>
+
+                    <select name="endHour_{{livestream.seq}}" [(ngModel)]="livestream.endHour"
+                            required="true">
+                      <option *ngFor="let hour of selectLists.hours"
+                              [label]="hour" [value]="hour"></option>
+                    </select>
+                    <span class="mr-1">시</span>
+
+                    <select name="endMin_{{livestream.seq}}" [(ngModel)]="livestream.endMin"
+                            required="true">
+                      <option *ngFor="let min of selectLists.mins" [label]="min" [value]="min"></option>
+                    </select>
+                    <span>분</span>
+
+                    <button *ngIf="possibleRegister() || possibleModify()"
+                            class="btn btn-type-03 sm-btn f-right"
+                            (click)="removeLivestream(index)">삭제</button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="mb20">
+            <div class="title-bar">
+              <span class="title-01 mr5">VOD 채널</span>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 15%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 31%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 24%;" />
+                </colgroup>
+                <tbody>
+                <tr *ngFor="let vod of vodList; let index = index">
+                  <th>광고처</th>
+                  <td>
+                    {{vod.partnerName}}
+                    <button *ngIf="possibleRegister() || possibleModify()"
+                            class="btn btn-type-03 sm-btn f-right"
+                            (click)="openSearchPartnerPopup(index)">선택</button>
+                  </td>
+                  <th>제목</th>
+                  <td>{{vod.youtubeTitle}}</td>
+                  <th>등록일</th>
+                  <td>
+                    {{vod.youtubeRegDate}}
+                    &nbsp; &nbsp;
+                    <input type="checkbox" class="checkbox-btn" name="expo_{{index}}" id="expo_{{index}}" value="true"
+                           [(ngModel)]="vod.expo" />
+                    <label class="small-text-04" for="expo_{{index}}"><span></span>노출</label>
+
+                    <button *ngIf="possibleRegister() || possibleModify()"
+                            class="btn btn-type-03 sm-btn f-right"
+                            (click)="clearPartner(index)">광고처 초기화</button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>
+
+        <div class="t-center mt20">
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="possibleRegister() || possibleModify()"
+                  [disabled]="target.form.invalid"
+                  (click)="saveLivestream()">저장</button>
+          <button type="button" class="btn btn-type-06"
+                  (click)="cancel()">취소</button>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>

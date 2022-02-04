@@ -1,0 +1,4 @@
+<div class="main-scroll">
+  <app-environment-list #environmentList (moveMngEvent) ="moveMngEventHandler($event)"  [ngClass]="{'dp-none': activePageType != pageType.LIST}"></app-environment-list>
+  <app-environment-mng  #environmentMng  (moveListEvent)="moveListEventHandler($event)" [ngClass]="{'dp-none': activePageType != pageType.FORM}"></app-environment-mng>
+</div>

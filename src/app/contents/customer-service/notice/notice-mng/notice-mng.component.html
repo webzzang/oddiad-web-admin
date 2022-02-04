@@ -1,0 +1,120 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+
+        <form role="form" #target="ngForm">
+          <div class="mb20">
+            <div class="title-bar">
+              <span class="title-01 mr5">공지사항 정보</span>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 40%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 40%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th class="required">전시<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <ng-container *ngFor="let expo of selectLists.expoCode; let index = index">
+                      <span class="radio-box mr20">
+                        <input type="radio" name="expo" class="radio-btn" id="{{'expo_' + index}}"
+                               [value]="expo.value" [checked]="expo.value == notice.expo"
+                               [(ngModel)]="notice.expo">
+                        <label for="{{'expo_' + index}}"><em></em>{{expo.name}}</label>
+                      </span>
+                    </ng-container>
+                  </td>
+                  <th>최상단 고정</th>
+                  <td>
+                    <input type="checkbox" class="checkbox-btn" name="topLocation" id="top-location"
+                           [(ngModel)]="notice.topLocation" [checked]="notice.topLocation"/>
+                    <label for="top-location" class="small-text-04"><span></span></label>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">제목<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="3">
+                    <input type="text" name="title" class="input-text-box w30p"
+                           required="true" minLength="1" maxLength="30"
+                           [(ngModel)]="notice.title" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>이미지<br>(png, jpeg, jpg)</th>
+                  <td colspan="3">
+                    <div class="flex-start">
+                      <span *ngIf="!notice.fileSeq">
+                        <!-- 이미지 추가 플러스 버튼 -->
+                        <div class="thumbnail round" style="background-image:url('/assets/images/img-plus.png')"
+                             (click)="fileInput.click()">
+                        </div>
+
+                        <input #fileInput
+                               type="file" [accept]="constants.UPLOAD_FILE.accept.image" hidden
+                               (change)="uploadFile($event.target.files)">
+                      </span>
+
+                      <div *ngIf="notice.fileSeq">
+                        <div class="thumbnail round" style="background-image:url('{{notice.filePath}}')"
+                             (click)="downloadFile()">
+                          <span class="thum-close"
+                                (click)="removeFile()"></span>
+                        </div>
+                      </div>
+                      <!-- 이미지 파일 첨부 -->
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">내용<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="3">
+                    <textarea name="contents" class="textarea-type-01" rows="5"
+                              required="true" maxlength="1000"
+                              [readOnly]="!(possibleRegister(!parseBoolean(seq)) || possibleModify(parseBoolean(seq)))"
+                              [(ngModel)]="notice.contents"></textarea>
+                  </td>
+                </tr>
+                <tr *ngIf="seq">
+                  <th>등록자</th>
+                  <td>
+                    {{notice.regId}}
+                  </td>
+                  <th>등록자</th>
+                  <td>
+                    {{notice.regDate}}
+                  </td>
+                </tr>
+                <tr *ngIf="seq">
+                  <th>최종수정자</th>
+                  <td>
+                    {{notice.modId}}
+                  </td>
+                  <th>최종수정일시</th>
+                  <td>
+                    {{notice.modDate}}
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>
+
+        <div class="t-center mt20">
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="possibleRegister(!parseBoolean(seq)) || possibleModify(parseBoolean(seq))"
+                  [disabled]="target.form.invalid"
+                  (click)="saveNotice()">저장</button>
+          <button type="button" class="btn btn-type-06"
+                  (click)="moveNoticeList('N')">목록</button>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>

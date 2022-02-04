@@ -1,0 +1,39 @@
+<div class="left-nav-menu">
+  <input type="checkbox" id="menu_state">
+
+  <nav class="left-nav">
+    <label for="menu_state">
+      <div class="logo-bg">
+        <h1 class="clearfix"><a>오디 관리자시스템</a></h1>
+        <div><span class="ham-menu"><i></i><i></i><i></i></span></div>
+      </div>
+    </label>
+    <ul id="accordion">
+
+      <li class="nav-li" *ngFor="let menuGroup of menuList">
+        <a [href]="'#menu-' + menuGroup.groupId" [ngClass]="{collapsed: selectGroupId != menuGroup.groupId}"
+          data-toggle="collapse" *ngIf="!menuGroup.routerLink" (click)="selectGroupMenu(menuGroup)">
+          <i [ngClass]="menuGroup.icon ? menuGroup.icon : ''"></i>
+          <span class="nav-text">{{menuGroup.groupName}}</span>
+          <span class="arrow"></span>
+        </a>
+        <a class="collapse" *ngIf="menuGroup.routerLink" [routerLink]="menuGroup.routerLink" (click)="activateMenu(menuGroup)">
+          <i [ngClass]="menuGroup.icon ? menuGroup.icon : ''"></i>
+          <span class="nav-text">{{menuGroup.groupName}}</span>
+          <span class="arrow"></span>
+        </a>
+
+        <ul class="nav-sub collapse" [ngClass]="{show: selectGroupId == menuGroup.groupId}"
+          [id]="'menu-' + menuGroup.groupId" data-parent="#accordion">
+          <li *ngFor="let menu of menuGroup.managerSubMenus" [ngClass]="{active: selectMenuId == menu.menuId}">
+            <a [routerLink]="menu.routerLink" (click)="activateSubMenu(menuGroup, menu)">{{menu.menuName}}</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+<!--    <label for="menu_state">-->
+<!--      <div class="bottom-info"><span></span></div>-->
+<!--    </label>-->
+  </nav>
+</div>

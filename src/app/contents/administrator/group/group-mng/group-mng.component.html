@@ -1,0 +1,166 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">관리자 그룹 정보</span>
+          </div>
+          <div class="table-scroll2">
+            <form role="form" #target="ngForm">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 40%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 40%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th class="required">그룹 이름<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <input type="text" name="name" class="input-text-box"
+                           required="true" maxLength="20"
+                           [(ngModel)]="group.name" />
+                  </td>
+                  <th class="required">사용 여부<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <ng-container *ngFor="let usable of selectLists.usable; let index = index">
+                      <span class="radio-box mr20">
+                        <input type="radio" name="usable" class="radio-btn" id="{{'usable_' + index}}"
+                               [value]="usable.value" [checked]="usable.value == group.usable"
+                               [(ngModel)]="group.usable">
+                        <label for="{{'usable_' + index}}"><em></em>{{usable.name}}</label>
+                      </span>
+                    </ng-container>
+                  </td>
+                </tr>
+                <tr>
+                  <th>기기상태 알림수신여부</th>
+                  <td colspan="3">
+                    <ng-container *ngFor="let noti of notis; let index = index">
+                      <span class="mr20">
+                        <input type="checkbox" class="checkbox-btn" name="{{noti.deviceStateCode}}" id="{{noti.deviceStateCode}}"
+                               value="true" [checked]="noti.devicePush"
+                               [(ngModel)]="noti.devicePush" />
+                        <label for="{{noti.deviceStateCode}}" class="small-text-04"><span></span>{{noti.deviceStateName}}</label>
+                      </span>
+                    </ng-container>
+                  </td>
+                </tr>
+                <tr>
+                  <th>메모</th>
+                  <td colspan="3">
+                  <textarea name="memo" class="textarea-type-01" rows="2"
+                            maxlength="500"
+                            [(ngModel)]="group.memo"></textarea>
+                  </td>
+                </tr>
+                <tr *ngIf="seq">
+                  <th>등록일시</th>
+                  <td>
+                    {{group.regDate}}
+                  </td>
+                  <th>최종 수정일시</th>
+                  <td>
+                    {{group.modDate}}
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </form>
+          </div>
+        </div>
+
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01">메뉴 권한</span>
+            <label class="small-text-02 ml10"></label>
+
+            <input type="checkbox" id="all-check" class="checkbox-btn"
+                   [(ngModel)]="menus.usable"
+                   (click)="changeChildrenMenuAuthority(menus)" />
+            <label for="all-check" class="small-text-04"><span></span>전체</label>
+          </div>
+
+          <ng-container *ngFor="let menuGroup of menus.roleMenus">
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 100%"/>
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th>
+                    <input type="checkbox" class="checkbox-btn" id="{{menuGroup.groupId}}" value="true"
+                           [checked]="menuGroup.usable"
+                           [(ngModel)]="menuGroup.usable" (click)="changeMenuAuthority(menuGroup)" />
+                    <label for="{{menuGroup.groupId}}" class="small-text-04"><span></span>{{menuGroup.groupName}}</label>
+                  </th>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03" style="margin-top: 0rem;">
+                <colgroup>
+                  <col style="width: 20%"/>
+                  <col style="width: 80%"/>
+                </colgroup>
+                <tbody>
+                <ng-container *ngFor="let menu of menuGroup.subMenus; let index = index">
+                <tr>
+                  <th>
+                    <input type="checkbox" class="checkbox-btn" id="{{menu.menuId}}"
+                           (click)="changeMenuAuthority(menu)"
+                           [(ngModel)]="menu.usable" />
+                    <label for="{{menu.menuId}}" class="small-text-04"><span></span>{{menu.menuName}}</label>
+                  </th>
+                  <td>
+                    <span class="mr20">
+                      <input type="checkbox" class="checkbox-btn" id="{{[menu.menuId, 'search'].join('_')}}"
+                             (click)="changeParentMenuAuthority(menu)"
+                             [(ngModel)]="menu.searchAuthority" />
+                      <label for="{{[menu.menuId, 'search'].join('_')}}" class="small-text-04"><span></span>조회</label>
+                    </span>
+                    <span class="mr20">
+                      <input type="checkbox" class="checkbox-btn" id="{{[menu.menuId, 'register'].join('_')}}"
+                             (click)="changeParentMenuAuthority(menu)"
+                             [(ngModel)]="menu.regAuthority" />
+                      <label for="{{[menu.menuId, 'register'].join('_')}}" class="small-text-04"><span></span>등록</label>
+                    </span>
+                    <span class="mr20">
+                      <input type="checkbox" class="checkbox-btn" id="{{[menu.menuId, 'modify'].join('_')}}"
+                             (click)="changeParentMenuAuthority(menu)"
+                             [(ngModel)]="menu.modAuthority" />
+                      <label for="{{[menu.menuId, 'modify'].join('_')}}" class="small-text-04"><span></span>수정</label>
+                    </span>
+                    <span class="mr20">
+                      <input type="checkbox" class="checkbox-btn" id="{{[menu.menuId, 'remove'].join('_')}}"
+                             (click)="changeParentMenuAuthority(menu)"
+                             [(ngModel)]="menu.delAuthority" />
+                      <label for="{{[menu.menuId, 'remove'].join('_')}}" class="small-text-04"><span></span>삭제</label>
+                    </span>
+                  </td>
+                </tr>
+                </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </ng-container>
+        </div>
+
+        <div class="t-center mt20">
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="possibleRegister(!seq) || possibleModify(null != seq)"
+                  [disabled]="target.form.invalid"
+                  (click)="saveGroup()">저장</button>
+          <button type="button" class="btn btn-type-06"
+                  (click)="moveGroupList('N')">목록</button>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>

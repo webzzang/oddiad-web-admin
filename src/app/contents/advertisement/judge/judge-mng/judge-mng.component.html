@@ -1,0 +1,291 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+
+        <form role="form" #target="ngForm">
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">신청 정보</span>
+          </div>
+          <div class="table-scroll2">
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+                <col style="width: 10%;" />
+                <col style="width: 24%;" />
+              </colgroup>
+              <tbody>
+              <tr>
+                <th>고객 이메일</th>
+                <td>{{info.email}}</td>
+                <th>고객 이름</th>
+                <td>{{info.name}}</td>
+                <th>전화번호</th>
+                <td>{{info.phoneNumber | phoneNumber}}</td>
+              </tr>
+              <tr>
+                <th>신청 일시</th>
+                <td>{{info.regDate}}</td>
+                <th>광고 시작일</th>
+                <td>{{info.startDate}}</td>
+                <th>광고 종료일</th>
+                <td>{{info.endDate}}</td>
+              </tr>
+              <tr>
+                <th>광고 상품</th>
+                <td>{{info.channelTypeName}}</td>
+                <th>신청 슬롯수</th>
+                <td>{{info.totRequestSlot}}</td>
+                <th>상태</th>
+                <td>{{info.auditCodeName}}</td>
+              </tr>
+              <tr>
+                <th>승인 일시</th>
+                <td>{{info.approvalDate}}</td>
+                <th>결제 일시</th>
+                <td>{{info.paymentDate}}</td>
+                <th>결제 취소 일시</th>
+                <td>{{info.cancelDate}}</td>
+              </tr>
+              <tr>
+                <th>메모</th>
+                <td colspan="5">
+                  <textarea name="memo" class="textarea-type-01" rows="2" maxlength="500"
+                            [readOnly]="!possibleModify('ADT001' == info.auditCode)"
+                            [(ngModel)]="info.memo"></textarea>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">신청 슬롯 정보</span>
+          </div>
+          <div class="table-scroll2">
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+                <col style="width: 10%;" />
+                <col style="width: 24%;" />
+              </colgroup>
+              <tbody>
+              <tr *ngFor="let partner of partners">
+                <th>광고처</th>
+                <td>{{partner.mallName}}</td>
+                <th>신청 슬롯</th>
+                <td colspan="3">{{partner.requestSlot}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">결제 금액</span>
+          </div>
+          <div class="table-scroll2">
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 90%;" />
+              </colgroup>
+              <tbody>
+              <tr>
+                <th>금액</th>
+                <td>{{info.price}}원</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">광고 정보</span>
+            <label class="small-text-03 ml5">* 파일의 순서는 드래그하여 변경할 수 있습니다.</label>
+          </div>
+          <div class="table-scroll2">
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+                <col style="width: 10%;" />
+                <col style="width: 24%;" />
+              </colgroup>
+              <tbody>
+              <tr>
+                <th>광고 이름</th>
+                <td>{{info.title}}</td>
+                <th>업종 구분</th>
+                <td>{{info.businessTypeCodeName}}</td>
+                <th>디자인 제작</th>
+                <td>{{info.designRequestName}}</td>
+              </tr>
+              <tr>
+                <th>파일</th>
+                <td colspan="5">
+                  <div class="flex-start">
+                    <span>
+                      <!-- 파일 추가 플러스 버튼 -->
+                      <div *ngIf="'PGT002' == info.progressCode"
+                           class="thumbnail round" style="background-image:url('/assets/images/img-plus.png')"
+                           (click)="fileInput.click()">
+                      </div>
+
+                      <input #fileInput
+                             type="file" [accept]="constants.UPLOAD_FILE.accept.all" hidden multiple
+                             (change)="uploadFile($event.target.files, 0)">
+                    </span>
+                    <span cdkDropList cdkDropListOrientation="horizontal">
+                      <span *ngFor="let file of files; let index = index"
+                            class="thumbnail round cdk-drag-item"
+                            style="background-image:url('{{file.path}}')"
+                            cdkDrag
+                            (cdkDragDropped)="dragFile($event)"
+                            (click)="downloadFile(file.fileSeq, file.name)">
+                        <span *ngIf="'ADT001' == info.auditCode"
+                              class="thum-close"
+                              (click)="removeFile(index)"></span>
+                      </span>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">사업자 정보</span>
+          </div>
+          <div class="table-scroll2">
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+                <col style="width: 10%;" />
+                <col style="width: 24%;" />
+              </colgroup>
+              <tbody>
+              <tr *ngIf="null == info.corporation">
+                <th>사업자구분</th>
+                <td colspan="5">{{info.businessGbn}}</td>
+              </tr>
+              <tr *ngIf="null != info.corporation">
+                <th>사업자구분</th>
+                <td>{{info.businessGbn}}</td>
+                <th>대표자 이름</th>
+                <td colspan="3">{{info.ceo}}</td>
+              </tr>
+              <tr *ngIf="null != info.corporation">
+                <th>사업자등록증</th>
+                <td>
+                  <u (click)="downloadFile(info.businessLicenseFile, info.businessLicenseFileName)">{{info.businessLicenseFileName}}</u>
+                </td>
+                <th>회사 이름</th>
+                <td>{{info.companyName}}</td>
+                <th>사업자등록번호</th>
+                <td>{{info.businessLicenseNumber}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">보류 이력</span>
+          </div>
+          <app-ag-grid #rejectionDataGrid
+                       [rowDataList]="rejections" [isInitLoad]="rejectionGrid.isInitLoad" [columnDefs]="rejectionGrid.columnDefs"
+                       [defaultColDef]="rejectionGrid.defaultColDef" [rowClassRules]="rejectionGrid.rowClassRules"
+                       [multiRowSelection]="false" (rowDoubleClick)="rejectionGrid.rowDoubleClick($event)"
+                       [gridHeight]="rejectionGrid.gridHeight" [disablePageNo]="true">
+          </app-ag-grid>
+        </div>
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">보류 사유</span>
+          </div>
+          <div class="table-scroll2">
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 90%;" />
+              </colgroup>
+              <tbody>
+              <tr>
+                <th [class.required]="info.requiredRejectionReason">
+                  보류 타입
+                  <label *ngIf="info.requiredRejectionReason"
+                         class="small-text-03 ml5">*</label>
+                </th>
+                <td>
+                  <div class="select-box-type2 w30p">
+                    <select name="stateCode" [disabled]="'ADT001' != info.auditCode"
+                            [(ngModel)]="info.rejectionCode">
+                      <option *ngFor="let option of selectLists.rejectionCode"
+                              [label]="option.name" [value]="option.value"></option>
+                    </select>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th [class.required]="info.requiredRejectionReason">
+                  상세 사유<br>(보류 시 필수)
+                  <label *ngIf="info.requiredRejectionReason"
+                         class="small-text-03 ml5">*</label>
+                </th>
+                <td>
+                  <textarea name="rejectionReason" class="textarea-type-01" rows="2"
+                            maxlength="500"
+                            [readOnly]="'ADT001' != info.auditCode"
+                            [(ngModel)]="info.rejectionReason"></textarea>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </form>
+
+        <div class="t-center mt20">
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="possibleModify('PGT002' == info.progressCode)"
+                  [disabled]="target.form.invalid"
+                  (click)="saveJudge(docStatus.nothing)">저장</button>
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="possibleModify('ADT001' == info.auditCode && 'PGT002' == info.progressCode && !info.rejectionCode)"
+                  [disabled]="target.form.invalid || 0 == files.length"
+                  (click)="saveJudge(docStatus.approval)">승인</button>
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="possibleModify('ADT001' == info.auditCode && 'PGT002' == info.progressCode && info.rejectionCode)"
+                  [disabled]="target.form.invalid || !info.rejectionCode || !info.rejectionReason"
+                  (click)="saveJudge(docStatus.reject)">보류</button>
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="possibleModify('PGT002' == info.progressCode)"
+                  (click)="cancelPayment()">결제취소</button>
+          <button type="button" class="btn btn-type-06"
+                  (click)="moveJudgeList('N')">목록</button>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>

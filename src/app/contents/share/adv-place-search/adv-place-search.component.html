@@ -1,0 +1,35 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <search-box #popupSearchBox
+                    [searchInfo]="search.info"
+                    (searchBtnHandler)="search.searchBtnHandler($event)"
+                    (clearBtnHandler)="search.clearBtnHandler($event)">
+        </search-box>
+
+        <div class="h10"></div>
+
+        <div>
+          <app-ag-grid #popupDataGrid
+                       [api]="grid.api" [isInitLoad]="grid.isInitLoad" [columnDefs]="grid.columnDefs"
+                       [defaultColDef]="grid.defaultColDef" [rowClassRules]="grid.rowClassRules"
+                       [multiRowSelection]="1 == openType"
+                       (rowClick)="grid.rowClick($event)"
+                       (rowDoubleClick)="grid.rowDoubleClick($event)"
+                       [funcButtons]="grid.funcButtons">
+          </app-ag-grid>
+        </div>
+        <div class="t-right mt20">
+          <button type="button" class="btn btn-type-04"
+                  [disabled]="grid.selectedRowData && 0 == grid.selectedRowData.length"
+                  (click)="choice()">선택</button>
+          <button type="button" class="btn btn-type-06"
+                  (click)="close()">닫기</button>
+        </div>
+      </div>
+    </article>
+    <div class="h20">
+    </div>
+  </section>
+</div>

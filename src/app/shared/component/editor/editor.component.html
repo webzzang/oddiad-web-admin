@@ -1,0 +1,6 @@
+<ng-template [ngIf]="!isViewer">
+  <div [ngxSummernote]="summernoteConfig" [(ngModel)]="data" class="summernote" (mediaDelete)="onMediaDelete($event)"></div>
+</ng-template>
+<ng-template [ngIf]="isViewer">
+  <div [ngxSummernoteView]="data" ></div>
+</ng-template>

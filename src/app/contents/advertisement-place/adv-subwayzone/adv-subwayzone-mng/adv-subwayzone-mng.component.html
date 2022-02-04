@@ -1,0 +1,310 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+
+        <form role="form" #target="ngForm">
+          <div class="mb20">
+            <div class="title-bar">
+              <span class="title-01 mr5">기본 정보</span>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 24%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th class="required">지하철 이름<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <input type="text" name="mallName" class="input-text-box w100p"
+                           required="true" maxLength="20"
+                           [(ngModel)]="info.mallName" />
+                  </td>
+                  <th class="required">노선<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="3">
+                    <ng-container *ngFor="let subway of subways; let index = index">
+                      <div class="select-box-type2 w-25">
+                        <select name="{{'subway_' + index}}"
+                                [(ngModel)]="subway.subwayCode"
+                                (ngModelChange)="changeSubwayLine(index)">
+                          <option *ngFor="let option of selectLists.subwayLineCode" [label]="option.name" [value]="option.value"></option>
+                        </select>
+                      </div>
+                    </ng-container>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">주소<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="5">
+                    <input type="text" class="input-text-box w100 mr5" style="border-color: #dcdce8;" name="zipCode"
+                           readonly="true" minLength="5" maxLength="5"
+                           [(ngModel)]="info.zipcode" />
+
+                    <app-daum-address [options]="{class: 'btn btn-type-03 sm-btn mr5'}"
+                                      (result)="searchPostCodeComplete($event)"></app-daum-address>
+
+                    <input type="text" class="input-text-box w450 mr5" style="border-color: #dcdce8;" name="addr"
+                           readonly="true" maxLength="100"
+                           [(ngModel)]="info.addr" />
+
+                    <input type="text" class="input-text-box w300 mr5" style="border-color: #dcdce8;" name="detailAddr"
+                           maxLength="100"
+                           [(ngModel)]="info.detailAddr" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>요약 소개</th>
+                  <td colspan="5">
+                    <input type="text" name="title" class="input-text-box w100p"
+                           maxLength="50"
+                           [(ngModel)]="info.summary" />
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">소개글<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="5">
+                    <textarea name="description" class="textarea-type-01" rows="2"
+                              maxlength="200"
+                              [(ngModel)]="info.description"></textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">소개 이미지<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="5">
+                    <div class="flex-start">
+                    <span>
+                      <!-- 파일 추가 플러스 버튼 -->
+                      <div class="thumbnail round" style="background-image:url('/assets/images/img-plus.png')"
+                           (click)="fileInput.click()">
+                      </div>
+
+                      <input #fileInput
+                             type="file" [accept]="constants.UPLOAD_FILE.accept.image" hidden multiple
+                             (change)="uploadFile($event.target.files, 0)">
+                    </span>
+                      <span cdkDropList cdkDropListOrientation="horizontal">
+                      <span *ngFor="let file of files; let index = index"
+                            class="thumbnail round cdk-drag-item"
+                            style="background-image:url('{{file.path}}')"
+                            cdkDrag
+                            (cdkDragDropped)="dragFile($event)"
+                            (click)="downloadFile(file.fileSeq, file.name)">
+                        <span class="thum-close"
+                              (click)="removeFile(index)"></span>
+                      </span>
+                    </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>태그</th>
+                  <td colspan="5">
+                    <input type="text" name="tagsStr" class="input-text-box w100p" placeholder="키워드는 ',' 로 구분하여 주십시오."
+                           maxLength="100"
+                           [(ngModel)]="info.tagsStr" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>배지</th>
+                  <td colspan="5">
+                    <div class="select-box-type2 w30p">
+                      <select name="badgeCode" [(ngModel)]="info.badgeCode">
+                        <option *ngFor="let badge of selectLists.badgeCode" [label]="badge.name" [value]="badge.value"></option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">광고 사례 노출<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="5">
+                    <ng-container *ngFor="let show of selectLists.showCode; let index = index">
+                      <span class="radio-box mr20">
+                        <input type="radio" name="advCaseExpo" class="radio-btn" id="{{'show_' + index}}"
+                               [value]="show.value" [checked]="show.value == info.advCaseExpo"
+                               [(ngModel)]="info.advCaseExpo">
+                        <label for="{{'show_' + index}}"><em></em>{{show.name}}</label>
+                      </span>
+                    </ng-container>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">운영 여부<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="5">
+                    <ng-container *ngFor="let operation of selectLists.operationCode; let index = index">
+                      <span class="radio-box mr20">
+                        <input type="radio" name="operation" class="radio-btn" id="{{'operation_' + index}}"
+                               [value]="operation.value" [checked]="operation.value == info.operation"
+                               [(ngModel)]="info.operation">
+                        <label for="{{'operation_' + index}}"><em></em>{{operation.name}}</label>
+                      </span>
+                    </ng-container>
+                  </td>
+                </tr>
+                <tr>
+                  <th>메모</th>
+                  <td colspan="5">
+                    <textarea name="memo" class="textarea-type-01" rows="2"
+                              maxlength="500"
+                              [(ngModel)]="info.memo"></textarea>
+                  </td>
+                </tr>
+                <tr *ngIf="info.seq">
+                  <th>등록일시</th>
+                  <td>{{info.regDate}}</td>
+                  <th>최종 수정일</th>
+                  <td colspan="3">{{info.modDate}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="mb20">
+            <div class="title-bar">
+              <span class="title-01 mr5">광고 설정</span>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 24%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th class="required">총 슬롯 수<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <input type="number" name="totalSlot" class="input-text-box w30p t-right"
+                           required="true" maxlength="3"
+                           [(ngModel)]="info.totalSlot" />
+                    <span>슬롯</span>
+                  </td>
+                  <th class="required">슬롯당 노출시간<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <input type="number" name="slotVideoTime" class="input-text-box w30p t-right"
+                           required="true" maxlength="3"
+                           [(ngModel)]="info.slotVideoTime" />
+                    <span>초</span>
+                  </td>
+                  <th class="required">
+                    <span>
+                      슬롯당 가격<br>(VAT 별도)
+                    </span>
+                    <span>
+                      <label class="small-text-03 ml5">*</label>
+                    </span>
+                  </th>
+                  <td>
+                    <input type="text" name="slotPriceLabel" class="input-text-box w30p t-right"
+                           required="true" maxlength="11"
+                           [(ngModel)]="info.slotPriceLabel"
+                           [textMask]="{mask: constants.MASK.number}"
+                           (change)="setSlotPrice($event.target.value)"/>
+                    <span>원/월</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">광고 위치<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <input type="text" name="location" class="input-text-box w100p"
+                           required="true" maxlength="50"
+                           [(ngModel)]="info.location" />
+                  </td>
+                  <th class="required">도면 등록<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <div class="flex-start">
+                      <span *ngIf="!info.mapFileSeq">
+                        <!-- 파일 추가 플러스 버튼 -->
+                        <div class="thumbnail round" style="background-image:url('/assets/images/img-plus.png')"
+                             (click)="docFileInput.click()">
+                        </div>
+
+                        <input #docFileInput
+                               type="file" [accept]="constants.UPLOAD_FILE.accept.image" hidden
+                               (change)="uploadDocFile($event.target.files)">
+                      </span>
+                      <span *ngIf="info.mapFileSeq"
+                            class="thumbnail round cdk-drag-item"
+                            style="background-image:url('{{info.mapFilePath}}')"
+                            (click)="downloadDocFile()">
+                        <span class="thum-close"
+                              (click)="removeDocFile()"></span>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">광고 화면<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="5">
+                    <input type="text" name="display" class="input-text-box w-100"
+                           required="true" maxlength="50"
+                           [(ngModel)]="info.display" />
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">광고 운영 시간<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <select name="operationStartHour" [(ngModel)]="info.operationStartHour"
+                            required="true">
+                      <option *ngFor="let hour of timeLists.hours" [label]="hour" [value]="hour"></option>
+                    </select>
+                    <span class="mr-1">시</span>
+
+                    <select name="operationStartMin" [(ngModel)]="info.operationStartMin"
+                            required="true">
+                      <option *ngFor="let min of timeLists.mins" [label]="min" [value]="min"></option>
+                    </select>
+                    <span class="mr-1">분</span>
+
+                    <span class="ml-1 mr-1">~</span>
+
+                    <select name="operationEndHour" [(ngModel)]="info.operationEndHour"
+                            required="true">
+                      <option *ngFor="let hour of timeLists.hours" [label]="hour" [value]="hour"></option>
+                    </select>
+                    <span class="mr-1">시</span>
+
+                    <select name="operationEndMin" [(ngModel)]="info.operationEndMin"
+                            required="true">
+                      <option *ngFor="let min of timeLists.mins" [label]="min" [value]="min"></option>
+                    </select>
+                    <span>분</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">1일 노출 횟수<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <input type="number" name="dayExpoCount" class="input-text-box w30p t-right"
+                           required="true" maxlength="4"
+                           [(ngModel)]="info.dayExpoCount" />
+                    <span>회</span>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>
+
+        <div class="t-center mt20">
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="possibleRegister(!seq) || possibleModify(seq)"
+                  [disabled]="target.form.invalid || 0 == files.length || !info.mapFileSeq || (0 == selectedSubwayCount)"
+                  (click)="saveSubwayzone()">저장</button>
+          <button type="button" class="btn btn-type-06"
+                  (click)="moveSubwayzoneList('N')">목록</button>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>

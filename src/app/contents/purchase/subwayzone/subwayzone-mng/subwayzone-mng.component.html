@@ -1,0 +1,153 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">기본설정</span>
+          </div>
+          <div class="table-scroll2">
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 30%;" />
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+              </colgroup>
+              <tbody>
+              <tr>
+                <th class="required">기기당 슬롯 수<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <input type="number" class="w-25 input-text-box" name="slotCount" pattern="[0-9]" maxlength="3"
+                         [(ngModel)]="info.slotCount" maxlength="3"
+                         required="true" >&nbsp;슬롯
+                </td>
+                <td colspan="3">
+                  <button class="btn btn-type-03 sm-btn" *ngIf="possibleModify()" [disabled]="info.slotCount == null"
+                          (click)="configModify('slotCount')">저장</button>
+                </td>
+              </tr>
+              <tr>
+                <th class="required">슬롯당 노출시간<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <input type="number" class="w-25 input-text-box" pattern="[0-9]" maxlength="3"
+                         [(ngModel)]="info.slotVideoTime"
+                  >&nbsp;초
+                </td>
+                <td colspan="3">
+                  <button class="btn btn-type-03 sm-btn" *ngIf="possibleModify()"  [disabled]="info.slotVideoTime == null"
+                          (click)="configModify('slotVideoTime')">저장</button>
+                </td>
+              </tr>
+              <tr>
+                <th class="required">운영 시간<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <select name="operationStartHour" [(ngModel)]="info.operationStartHour"
+                          required="true">
+                    <option *ngFor="let hour of timeLists.hours" [label]="hour" [value]="hour"></option>
+                  </select>
+                  <span class="mr-1">시</span>
+
+                  <select name="operationStartMin" [(ngModel)]="info.operationStartMin"
+                          required="true">
+                    <option *ngFor="let min of timeLists.mins" [label]="min" [value]="min"></option>
+                  </select>
+                  <span class="mr-1">분</span>
+
+                  <span class="ml-1 mr-1">~</span>
+
+                  <select name="operationEndHour" [(ngModel)]="info.operationEndHour"
+                          required="true">
+                    <option *ngFor="let hour of timeLists.hours" [label]="hour" [value]="hour"></option>
+                  </select>
+                  <span class="mr-1">시</span>
+
+                  <select name="operationEndMin" [(ngModel)]="info.operationEndMin"
+                          required="true">
+                    <option *ngFor="let min of timeLists.mins" [label]="min" [value]="min"></option>
+                  </select>
+                  <span>분</span>
+                </td>
+                <td colspan="3">
+                  <button class="btn btn-type-03 sm-btn" *ngIf="possibleModify()"
+                          (click)="configModify('operationTime')">저장</button>
+                </td>
+              </tr>
+              <tr>
+                <th class="required">익월 광고 마감일<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <span class="mr-1">매월</span>
+                  &nbsp;<input type="number" class="w-25 input-text-box" pattern="[0-9]" maxlength="3"
+                               [(ngModel)]="info.subwayAdvLastDate">
+                  <span class="mr-1">일(해당 일까지 익월 광고 신청 가능)</span>
+                </td>
+                <td colspan="3">
+                  <button class="btn btn-type-03 sm-btn" *ngIf="possibleModify()" [disabled]="info.subwayAdvLastDate == null"
+                          (click)="configModify('subwayAdvLastDate')">저장</button>
+                </td>
+              </tr>
+              <tr>
+                <th class="required">최대 광고 시작일<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <span class="mr-1">신청 당일로부터</span>
+                  &nbsp;<input type="number" class="w-25 input-text-box" pattern="[0-9]" maxlength="3"
+                               [(ngModel)]="info.subwayAdvMaxStartDate">
+                  &nbsp;<span class="mr-1">일 후까지</span>
+                </td>
+                <td colspan="3">
+                  <button class="btn btn-type-03 sm-btn" *ngIf="possibleModify()"  [disabled]="info.subwayAdvMaxStartDate == null"
+                          (click)="configModify('subwayAdvMaxStartDate')">저장</button>
+                </td>
+              </tr>
+              <tr>
+                <th class="required">신청 취소 가능일<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <span class="mr-1">광고 시작일로부터</span>
+                  &nbsp;<input type="number" class="w-25 input-text-box"  pattern="[0-9]" maxlength="3"
+                               [(ngModel)]="info.subwayAdvCancelDate">
+                  &nbsp;<span class="mr-1">일 전까지</span>
+                </td>
+                <td colspan="3">
+                  <button class="btn btn-type-03 sm-btn" *ngIf="possibleModify()"  [disabled]="info.subwayAdvCancelDate == null"
+                          (click)="configModify('subwayAdvCancelDate')">저장</button>
+                </td>
+              </tr>
+              <tr>
+                <th class="required">최장 광고 기간<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <input type="number" class="w-25 input-text-box"  pattern="[0-9]" maxlength="3"
+                         [(ngModel)]="info.subwayAdvMaxDate">&nbsp;개월
+                </td>
+                <td colspan="3">
+                  <button class="btn btn-type-03 sm-btn " *ngIf="possibleModify()" [disabled]="info.subwayAdvMaxDate == null"
+                          (click)="configModify('subwayAdvMaxDate')">저장</button>
+                </td>
+              </tr>
+              <tr>
+                <th class="required">디자인 제작 옵션<label class="small-text-03 ml5">*</label></th>
+                <td>
+                   <span class="radio-box mr20">
+
+                    <input type="radio" class="radio-btn" name="radio"
+                           id="sam-01" [(ngModel)]="info.designRequest" value="true"/>
+                    <label for="sam-01"><em></em>사용</label>
+                    &nbsp;
+                    <input type="radio" class="radio-btn" name="radio"
+                           id="sam-02"  [(ngModel)]="info.designRequest" value="false"/>
+                    <label for="sam-02"><em></em>미사용</label>
+                   </span>
+                </td>
+                <td colspan="3">
+                  <button  class="btn btn-type-03 sm-btn" *ngIf="possibleModify()"
+                           (click)="configModify('designRequest')">저장</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>

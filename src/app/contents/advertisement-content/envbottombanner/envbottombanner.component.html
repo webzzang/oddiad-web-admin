@@ -1,0 +1,4 @@
+<div class="main-scroll">
+  <app-envbottombanner-list #envbottombannerList (moveMngEvent) ="moveMngEventHandler($event)"  [ngClass]="{'dp-none': activePageType != pageType.LIST}" ></app-envbottombanner-list>
+  <app-envbottombanner-mng  #envbottombannerMng  (moveListEvent)="moveListEventHandler($event)" [ngClass]="{'dp-none': activePageType != pageType.FORM}"></app-envbottombanner-mng>
+</div>

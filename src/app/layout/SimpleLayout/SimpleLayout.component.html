@@ -1,0 +1,11 @@
+<div class="wrap">
+  <div class="content">
+    <app-left></app-left>
+    <div class="content-main">
+      <app-top></app-top>
+      <router-outlet></router-outlet>
+      <ngx-spinner [bdColor]="'rgba(0,0,0,0.4)'" size="medium" color="#00e8ba" type="ball-clip-rotate" [name]="'main'" [fullScreen] = "false"></ngx-spinner>
+    </div>
+  </div>
+</div>
+<ngx-spinner [bdColor]="'rgba(0,0,0,0.4)'" size="medium" color="#00e8ba" type="ball-clip-rotate" [name]="'full'"></ngx-spinner>

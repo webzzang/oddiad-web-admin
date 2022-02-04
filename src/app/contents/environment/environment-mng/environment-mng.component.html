@@ -1,0 +1,65 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">기기 정보</span>
+          </div>
+          <div class="table-scroll2">
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+                <col style="width: 10%;" />
+                <col style="width: 24%;" />
+              </colgroup>
+              <tbody>
+                <tr>
+                  <th>기기 이름</th>
+                  <td>{{environment.deviceName}}</td>
+                  <th>메체 코드</th>
+                  <td>{{environment.deviceId}}</td>
+                  <th>기기 구분</th>
+                  <td>{{environment.deviceTypeName}}</td>
+                </tr>
+                <tr>
+                  <th>오디존</th>
+                  <td colspan="5">{{environment.mallName}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">상태 이력</span>
+            <search-box #mngSearchBox
+                        [searchInfo]="search.info"
+                        (searchBtnHandler)="search.searchBtnHandler($event)"
+                        (clearBtnHandler)="search.clearBtnHandler($event)">
+            </search-box>
+
+            <div class="h10"></div>
+
+            <div>
+              <app-ag-grid #mngDataGrid
+                           [api]="grid.api" [isInitLoad]="grid.isInitLoad" [columnDefs]="grid.columnDefs"
+                           [defaultColDef]="grid.defaultColDef" [rowClassRules]="grid.rowClassRules"
+                           [multiRowSelection]="false" (rowDoubleClick)="grid.rowDoubleClick($event)"
+                           [funcButtons]="grid.funcButtons">
+              </app-ag-grid>
+            </div>
+          </div>
+          <div class="t-center mt20">
+            <button type="button" class="btn btn-type-06"
+                    (click)="moveEnvironmentList('N')">목록</button>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>

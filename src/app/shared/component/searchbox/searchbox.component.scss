@@ -1,0 +1,12 @@
+@media (max-width: 991px) {
+  .form-row form {
+    width: 100% !important;
+    margin-bottom: 4px;
+  }
+}
+
+@media (min-width: 991px) {
+  .form-row form {
+    margin-right: 6px;
+  }
+}

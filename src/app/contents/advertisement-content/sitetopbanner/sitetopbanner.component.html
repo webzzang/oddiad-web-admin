@@ -1,0 +1,4 @@
+<div class="main-scroll">
+  <app-sitetopbanner-list #sitetopbannerList (moveMngEvent) ="moveMngEventHandler($event)"  [ngClass]="{'dp-none': activePageType != pageType.LIST}" ></app-sitetopbanner-list>
+  <app-sitetopbanner-mng  #sitetopbannerMng  (moveListEvent)="moveListEventHandler($event)" [ngClass]="{'dp-none': activePageType != pageType.FORM}"></app-sitetopbanner-mng>
+</div>

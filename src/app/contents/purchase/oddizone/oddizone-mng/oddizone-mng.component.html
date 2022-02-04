@@ -1,0 +1,219 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">기본설정</span>
+          </div>
+          <div class="table-scroll2">
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 30%;" />
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+              </colgroup>
+              <tbody>
+              <tr>
+                <th class="required">기기당 슬롯 수<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <input type="number" class="w-25 input-text-box" [(ngModel)]="info.slotCount" maxlength="3">&nbsp;슬롯
+                </td>
+                <td colspan="3">
+                  <button class="btn btn-type-03 sm-btn" *ngIf="possibleModify()" [disabled]="info.slotCount == null" (click)="configModify('slotCount')">저장</button>
+                </td>
+              </tr>
+              <tr>
+                <th class="required">슬롯당 노출 시간<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <input type="number" class="w-25 input-text-box" [(ngModel)]="info.slotVideoTime" maxlength="3">&nbsp;초
+                </td>
+                <td colspan="3">
+                  <button class="btn btn-type-03 sm-btn " *ngIf="possibleModify()" [disabled]="info.slotVideoTime == null" (click)="configModify('slotVideoTime')">저장</button>
+                </td>
+              </tr>
+              <tr>
+                <th class="required">광고 시작 가능일<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <span class="mr-1">신청 당일로부터</span>
+                  &nbsp;<input type="number" class="w-25 input-text-box" [(ngModel)]="info.oddiAdvFromStartDate" maxlength="2">
+                  &nbsp;<span class="mr-1">일 후부터</span>
+                  &nbsp;<input type="number" class="w-25 input-text-box" [(ngModel)]="info.oddiAdvToStartDate" maxlength="2">
+                  <span class="mr-1">일 후까지</span>
+                </td>
+                <td colspan="3">
+                  <button class="btn btn-type-03 sm-btn " *ngIf="possibleModify()" [disabled]="info.oddiAdvFromStartDate == null || info.oddiAdvToStartDate == null"  (click)="configModify('oddiAdvStartDate')">저장</button>
+                </td>
+              </tr>
+              <tr>
+                <th class="required">신청 취소 가능일<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <span class="mr-1">광고 당일로부터</span>
+                  &nbsp;<input type="number" class="w-25 input-text-box" [(ngModel)]="info.oddiAdvCancelDate" maxlength="2">
+                  &nbsp;<span class="mr-1">일 전까지</span>
+                </td>
+                <td colspan="3">
+                  <button class="btn btn-type-03 sm-btn " *ngIf="possibleModify()" [disabled]="info.oddiAdvCancelDate == null" (click)="configModify('oddiAdvCancelDate')">저장</button>
+                </td>
+              </tr>
+              <tr>
+                <th class="required">최장 광고 기간<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <input type="number" class="w-25 input-text-box" [(ngModel)]="info.oddiAdvMaxDate" maxlength="2">&nbsp;개월
+                </td>
+                <td colspan="3">
+                  <button class="btn btn-type-03 sm-btn " *ngIf="possibleModify()" [disabled]="info.oddiAdvMaxDate == null" (click)="configModify('oddiAdvMaxDate')">저장</button>
+                </td>
+              </tr>
+              <tr>
+                <th class="required">디자인 제작 옵션<label class="small-text-03 ml5">*</label></th>
+                <td>
+                   <span class="radio-box mr20">
+
+                    <input type="radio" class="radio-btn" name="radio"
+                       id="sam-01" [(ngModel)]="info.designRequest" value="true"/>
+                    <label for="sam-01"><em></em>사용</label>
+                    &nbsp;
+                    <input type="radio" class="radio-btn" name="radio"
+                       id="sam-02"  [(ngModel)]="info.designRequest" value="false"/>
+                    <label for="sam-02"><em></em>미사용</label>
+                   </span>
+                </td>
+                <td colspan="3">
+                  <button  class="btn btn-type-03 sm-btn" *ngIf="possibleModify()"
+                           (click)="configModify('designRequest')">저장</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">기본 광고 등록</span>
+          </div>
+          <div class="table-scroll2">
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 30%;" />
+                <col style="width: 10%;" />
+                <col style="width: 31%;" />
+                <col style="width: 10%;" />
+                <col style="width: 24%;" />
+              </colgroup>
+              <tbody>
+              <tr>
+                <th>광고 이름</th>
+                <td>
+                  <input type="text" class="w-50 input-text-box"
+                         name="advName" required="true"
+                         [(ngModel)]="info.advName" maxlength="20">
+                </td>
+                <th class="required">파일 등록</th>
+                <td colspan="3">
+                  <div class="flex-start">
+                    <span>
+                      <!-- 파일 추가 플러스 버튼 -->
+                      <div class="thumbnail round" style="background-image:url('/assets/images/img-plus.png')"
+                           (click)="fileInput.click()">
+                      </div>
+
+                      <input #fileInput
+                             name="file"
+                             type="file" [accept]="constants.UPLOAD_FILE.accept.all" hidden
+                             (change)="uploadFile($event.target.files, 0)">
+                    </span>
+                    <span cdkDropList cdkDropListOrientation="horizontal">
+                      <span *ngFor="let file of files; let index = index"
+                            class="thumbnail round cdk-drag-item"
+                            style="background-image:url('{{file.filePath}}')"
+                            cdkDrag
+                            (cdkDragDropped)="dragFile($event)"
+                            (click)="downloadFile(file.defaultAdvFileSeq, file.fileName)">
+                        <span class="thum-close"
+                              (click)="removeFile(index)"></span>
+                      </span>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="t-center mt20">
+          <button type="button" class="btn btn-type-04"
+                  [disabled]="info.advName == null || info.advName == '' || files.length == 0"
+                  (click)="defaultAdvModify()">저장</button>
+        </div>
+
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">광고 화면 분할 설정</span>
+          </div>
+          <div class="table-scroll2">
+            <form role="form" #target="ngForm" #divForm >
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+                <col style="width: 10%;" />
+                <col style="width: 24%;" />
+              </colgroup>
+              <tbody>
+              <tr>
+                <th>화면 분할</th>
+                <td>
+                  <div class="select-box-type2 w30p">
+                    <select name="displayDiv"
+                            [(ngModel)]="info.displayDiv">
+                      <option *ngFor="let option of selectLists.displayDivCode"
+                              [label]="option.name" [value]="option.value"></option>
+                    </select>
+                  </div>
+                </td>
+                <th>오른쪽 화면</th>
+                <td>
+                  <span *ngIf="'divisions_1' == info.displayDiv">-</span>
+                  <div *ngIf="'divisions_2' == info.displayDiv || 'divisions_3' == info.displayDiv"
+                       class="select-box-type2 w30p">
+                    <select name="sideContentsType"
+                            [(ngModel)]="info.sideDisplayServiceCode">
+                      <option *ngFor="let option of selectLists.sideDisplayServiceCode"
+                              [label]="option.name" [value]="option.value"></option>
+                    </select>
+                  </div>
+                </td>
+                <th>아래쪽 화면</th>
+                <td>
+                  <span *ngIf="'divisions_3' == info.displayDiv">
+                    배너
+                    <input type="hidden" name="bottomDisplayServiceCode" value="BDT001" [(ngModel)]="info.bottomDisplayServiceCode">
+                  </span>
+                  <span *ngIf="'divisions_1' == info.displayDiv || 'divisions_2' == info.displayDiv">
+                    -
+                    <input type="hidden" name="bottomDisplayServiceCode" value="" [(ngModel)]="info.bottomDisplayServiceCode">
+                  </span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            </form>
+          </div>
+        </div>
+
+        <div class="t-center mt20">
+          <button type="button" class="btn btn-type-04"  *ngIf="possibleModify()"
+                  [disabled]="divForm.invalid"
+                  (click)="displayDivModify()">저장</button>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>

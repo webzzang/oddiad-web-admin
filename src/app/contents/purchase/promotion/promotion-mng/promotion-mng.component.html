@@ -1,0 +1,152 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+
+        <form role="form" #target="ngForm">
+          <div class="mb20">
+            <div class="title-bar">
+              <span class="title-01 mr5">기본 정보</span>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 90%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th class="required">프로모션 이름<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <input type="text" name="name" class="input-text-box w-25"
+                           required="true" maxLength="20"
+                           [(ngModel)]="promotion.name" />
+                  </td>
+                </tr>
+                <tr *ngIf="0 == (promotion.couponCount || 0)">
+                  <th class="required">할인<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <input type="number" name="discountPrice" class="input-text-box" style="text-align: right;"
+                           required="true" maxLength="8"
+                           [(ngModel)]="promotion.discountPrice" /> 원
+                  </td>
+                </tr>
+                <tr *ngIf="0 < promotion.couponCount">
+                  <th>할인</th>
+                  <td>{{promotion.discountPrice}} 원</td>
+                </tr>
+                <tr>
+                  <th>내용</th>
+                  <td>
+                    <textarea name="memo" class="textarea-type-01" rows="2"
+                              maxlength="500"
+                              [(ngModel)]="promotion.contents"></textarea>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>
+
+        <div class="t-center mt20">
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="(possibleRegister(!seq)) || (possibleModify(null != seq))"
+                  [disabled]="target.form.invalid"
+                  (click)="savePromotion()" >저장</button>
+          <button type="button" class="btn btn-type-06" (click)="movePromotionList(refreshListYn)">목록</button>
+        </div>
+
+        <div *ngIf="seq"
+             class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">쿠폰 발행 정보</span>
+          </div>
+          <div class="table-scroll2">
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+                <col style="width: 10%;" />
+                <col style="width: 57%;" />
+              </colgroup>
+              <tbody>
+              <tr *ngIf="0 == (coupon.couponCount || 0)">
+                <th class="required">프로모션 종료일<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <input type="text" class="lc_01 startInputCal" mwlFlatpickr name="expiredDate" readonly
+                         [altInput]="true"
+                         [altInputClass]="'form-control search-date-picker'"
+                         [altFormat]="'Y-m-d'"
+                         [locale]="datepickerLocal"
+                         [dateFormat]="'Ymd'"
+                         [(ngModel)]="promotion.expiredDate"
+                         [disableMobile]="false"
+                         [allowInput]="true"
+                         required="true" />
+                </td>
+                <th class="required">쿠폰 발행<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <form role="form" #targetCoupon="ngForm" style="display: inline-block;">
+                    <input type="number" name="couponIssueNumber" class="input-btn" style="text-align: right;"
+                           required="true" pattern="[0-9]{1,4}" placeholder="1 ~ 9999장 발급 가능"
+                           [(ngModel)]="couponIssueNumber" />
+                  </form>
+                  &nbsp;
+                  <button *ngIf="possibleRegister()"
+                          class="btn btn-type-03 sm-btn"
+                          [disabled]="targetCoupon.form.invalid || 0 == couponIssueNumber"
+                          (click)="issueCoupon()">쿠폰 생성</button>
+
+                  <label class="small-text-03 ml5">* 쿠폰은 1회만 발급가능하며, 발급된 쿠폰정보는 수정이 불가합니다.</label>
+                </td>
+              </tr>
+              <tr *ngIf="0 < coupon.couponCount">
+                <th>프로모션 종료일</th>
+                <td colspan="3">{{coupon.expiredDateLabel}}</td>
+              </tr>
+              <tr *ngIf="0 < coupon.couponCount">
+                <th>총 발행 쿠폰 수</th>
+                <td>{{coupon.couponCount}}</td>
+                <th>사용 완료</th>
+                <td>{{coupon.useCouponCount}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div *ngIf="seq"
+             class="mb20">
+          <search-box #mngSearchBox
+                      [searchInfo]="search.info"
+                      (searchBtnHandler)="search.searchBtnHandler($event)"
+                      (clearBtnHandler)="search.clearBtnHandler($event)">
+          </search-box>
+
+          <div class="h10"></div>
+
+          <div>
+            <app-ag-grid #mngDataGrid
+                         [api]="grid.api" [isInitLoad]="grid.isInitLoad" [columnDefs]="grid.columnDefs"
+                         [defaultColDef]="grid.defaultColDef" [rowClassRules]="grid.rowClassRules"
+                         [multiRowSelection]="false" (rowDoubleClick)="grid.rowDoubleClick($event)"
+                         [funcButtons]="grid.funcButtons">
+            </app-ag-grid>
+          </div>
+
+          <app-excel-exporter #excelExporter
+                              [fileName]="excel.fileName"
+                              [sheetName]="excel.sheetName"
+                              [headerNames]="excel.headerNames"
+                              [columnNames]="excel.columnNames"
+                              [columnWidths]="excel.columnWidths"
+                              [buttonStyleClass]="excel.buttonStyleClass"
+                              [list]="excel.list"
+                              [hide]="excel.hide"></app-excel-exporter>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>

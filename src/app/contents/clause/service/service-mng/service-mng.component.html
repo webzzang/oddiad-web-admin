@@ -1,0 +1,131 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+
+        <form role="form" #target="ngForm">
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">업데이트 정보</span>
+          </div>
+          <div class="table-scroll2">
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 40%;" />
+                <col style="width: 10%;" />
+                <col style="width: 40%;" />
+              </colgroup>
+              <tbody>
+              <tr>
+                <th class="required">버전<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <input type="text" name="version" class="input-text-box"
+                         required="true" minlength="1" maxLength="20"
+                         [(ngModel)]="clause.version" />
+                </td>
+                <th class="required">상태<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  {{clause.statusCodeName}}
+                </td>
+              </tr>
+              <tr *ngIf="seq">
+                <th>등록자</th>
+                <td>
+                  {{clause.regId}}
+                </td>
+                <th>등록자</th>
+                <td>
+                  {{clause.regDate}}
+                </td>
+              </tr>
+              <tr *ngIf="seq">
+                <th>최종수정자</th>
+                <td>
+                  {{clause.modId}}
+                </td>
+                <th>최종수정일시</th>
+                <td>
+                  {{clause.modDate}}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">약관</span>
+          </div>
+          <div class="table-scroll2">
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 40%;" />
+                <col style="width: 10%;" />
+                <col style="width: 40%;" />
+              </colgroup>
+              <tbody>
+              <tr>
+                <th class="required">약관 이름<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <input type="text" name="title" class="input-text-box w100p"
+                         required="true" minLength="1" maxLength="20"
+                         [(ngModel)]="clause.title" />
+                </td>
+                <th class="required">약관 종류<label class="small-text-03 ml5">*</label></th>
+                <td>
+                  <div class="select-box-type2 w50p">
+                    <select name="advTerm" [(ngModel)]="clause.advTerms"
+                            required="true">
+                      <option *ngFor="let option of selectLists.advTerm"
+                              [label]="option.name" [value]="option.value"></option>
+                    </select>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>동의 필수</th>
+                <td colspan="3">
+                  <input type="checkbox" class="checkbox-btn" name="required" id="agree-required"
+                         [(ngModel)]="clause.required" [checked]="clause.required"/>
+                  <label for="agree-required" class="small-text-04"><span></span></label>
+                </td>
+              </tr>
+              <tr>
+                <th>내용</th>
+                <td colspan="3">
+                  <app-editor [(data)]=clause.contents></app-editor>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </form>
+
+        <div class="t-center mt20">
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="(!seq || 'TST001' == clause.statusCode)&& (possibleRegister(!seq) || possibleModify(null != seq))"
+                  [disabled]="target.form.invalid || !clause.contents"
+                  (click)="saveServiceClause(clauseStatus.TEMP)">임시저장</button>
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="possibleRegister(!seq) || possibleModify(null != seq)"
+                  [disabled]="!clause.title || !clause.contents"
+                  (click)="openClausePreviewer()">미리보기</button>
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="(!seq || 'TST001' == clause.statusCode) && (possibleRegister(!seq) || possibleModify(null != seq))"
+                  [disabled]="target.form.invalid || !clause.contents"
+                  (click)="saveServiceClause(clauseStatus.USE)">사용</button>
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="'TST002' == clause.statusCode && (possibleRegister(!seq) || possibleModify(null != seq))"
+                  (click)="modifyServiceTermsStatusToGarbage()">폐기</button>
+          <button type="button" class="btn btn-type-06"
+                  (click)="moveServiceClauseList('N')">목록</button>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>

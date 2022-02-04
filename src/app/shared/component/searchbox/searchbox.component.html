@@ -1,0 +1,29 @@
+<section class="search-wrap">
+  <!--
+  <div class="table-box mb20">
+    <div class="tablerow first-of-type">-->
+
+      <div class="form-group box-row-wr first-of-type-01">
+        <form role="form"  search  #search class="table-row"
+              *ngFor="let info of searchInfo;"
+              class="mr10"
+              [fieldInfo]="info" 
+              [ngClass]="info.addClass ? info.addClass : ''"
+              (userInputChange)="userInputHandler($event)"
+              [isClear]="isAllClear"
+              [_dateRangeClear]="dateRangeClear"
+              [_clearDateRange]="clearDateRangeValue"
+              (searchFunc)="onSearchBtnClick($event)"
+              (btnEvent)="onClickBtn($event)">
+        </form>
+        <div class=" mt10 w100p">
+          <form class="form-inline">
+              <button type="button" class="btn btn-type-04" (click)="onSearchBtnClick($event)">검색</button>
+              <button type="button" class="btn btn-type-05" (click)="onClearBtnClick()">초기화</button>
+          </form>
+        </div>
+      </div>
+  <!--
+  </div>
+</div>-->
+</section>

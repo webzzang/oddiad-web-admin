@@ -1,0 +1,187 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+
+        <form role="form" #target="ngForm">
+          <div class="mb20">
+            <div class="title-bar">
+              <span class="title-01 mr5">기본 정보</span>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 24%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th>고객 이메일</th>
+                  <td>{{member.email}}</td>
+                  <th>고객 이름</th>
+                  <td>{{member.name}}</td>
+                  <th>전화번호</th>
+                  <td>{{member.phoneNumber}}</td>
+                </tr>
+                <tr>
+                  <th>가입일시</th>
+                  <td>{{member.signupDate}}</td>
+                  <th>최종접속일시</th>
+                  <td>{{member.loginDate}}</td>
+                  <th>상태</th>
+                  <td>
+                    <div class="select-box-type2 w50p">
+                      <select name="stateCode"
+                              required="true"
+                              [(ngModel)]="member.stateCode">
+                        <option *ngFor="let option of selectLists.memberStatus"
+                                [label]="option.name" [value]="option.value"></option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>메모</th>
+                  <td colspan="5">
+                    <textarea name="memo" class="textarea-type-01" rows="2"
+                              maxlength="500"
+                              [(ngModel)]="member.memo"></textarea>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="mb20" *ngIf="member.pregDate">
+            <div class="title-bar">
+              <span class="title-01 mr5">개인 사업자</span>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 24%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th>상호명</th>
+                  <td>{{member.pmallName}}</td>
+                  <th>대표자명</th>
+                  <td>{{member.pceo}}</td>
+                  <th>사업자등록번호</th>
+                  <td>{{member.pbusinessLicenseNumber}}</td>
+                </tr>
+                <tr>
+                  <th>사업자등록증</th>
+                  <td>
+                    <button type="button" class="btn btn-type-03 sm-btn"
+                            (click)="downloadPersonFile()">다운로드</button>
+                  </td>
+                  <th>등록일시</th>
+                  <td colspan="3">{{member.pregDate}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="mb20" *ngIf="member.cregDate">
+            <div class="title-bar">
+              <span class="title-01 mr5">법인 사업자</span>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 24%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th>상호명</th>
+                  <td>{{member.cmallName}}</td>
+                  <th>사업자명</th>
+                  <td>{{member.cceo}}</td>
+                  <th>사업자등록번호</th>
+                  <td>{{member.cbusinessLicenseNumber}}</td>
+                </tr>
+                <tr>
+                  <th>사업자등록증</th>
+                  <td>
+                    <button type="button" class="btn btn-type-03 sm-btn"
+                            (click)="downloadCompanyFile()">다운로드</button>
+                  </td>
+                  <th>등록일시</th>
+                  <td colspan="3">
+                    {{member.cregDate}}
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>
+
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">활동 내역</span>
+          </div>
+          <div class="table-scroll2">
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 100%;" />
+              </colgroup>
+              <tbody>
+              <tr>
+                <td>
+                  <button type="button" class="btn btn-type-03 sm-btn"
+                          [disabled]="moveButtonDisabled"
+                          (click)="moveJudgeList()">광고 신청 내역</button>
+                  <button type="button" class="btn btn-type-03 sm-btn"
+                          [disabled]="moveButtonDisabled"
+                          (click)="moveAdvHistoryList()">광고 내역</button>
+                  <button type="button" class="btn btn-type-03 sm-btn"
+                          [disabled]="moveButtonDisabled"
+                          (click)="movePaymentList()">결제 내역</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">약관 동의</span>
+          </div>
+          <app-ag-grid [rowDataList]="clauses" [isInitLoad]="clauseGrid.isInitLoad" [columnDefs]="clauseGrid.columnDefs"
+                       [defaultColDef]="clauseGrid.defaultColDef" [rowClassRules]="clauseGrid.rowClassRules"
+                       [multiRowSelection]="false" (rowDoubleClick)="clauseGrid.rowDoubleClick($event)"
+                       [gridHeight]="clauseGrid.gridHeight" [disablePageNo]="true">
+          </app-ag-grid>
+        </div>
+
+        <div class="t-center mt20">
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="possibleRegister(!id) || possibleModify(null != id)"
+                  [disabled]="target.form.invalid"
+                  (click)="saveMember()">저장</button>
+          <button type="button" class="btn btn-type-06"
+                  (click)="moveMemberList('N')">목록</button>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>

@@ -1,0 +1,39 @@
+<div style="position: relative;">
+  <div *ngIf="!disablePageNo || (funcButtons && 0 < funcButtons.length)"
+       class="">
+    <span *ngIf="!disablePageNo"
+          class="table-top-number" value="건" data-title="검색결과">{{itemCount}}</span>
+    <div class="f-right">
+      <button type="button" class="btn btn-type-03 sm-btn"
+              *ngFor="let funcButton of funcButtons"
+              (click)="funcButton.clickEventHandler()">{{funcButton.label}}</button>
+      &nbsp;
+      <div *ngIf="!disablePageNo"
+          class="select-box-type2 w150">
+        <select [(ngModel)]="pageOnSize"
+                (change)="pageSizeChange();">
+          <option *ngFor="let item of pageSizeList" [ngValue] = item.value>{{item.label}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="h10"></div>
+
+  <ag-grid-angular #dataGrid class="ag-theme-balham" style="width: 100%; height: 100%;" *ngIf="viewGrid"
+    [style.height.px]="gridHeight" [headerHeight]="headerHeight" [rowHeight]="rowHeight" [rowData]="rowDataList"
+    [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [rowClassRules]="rowClassRules"
+    [suppressHorizontalScroll]="false" [suppressColumnVirtualisation]="true" (gridReady)="onGridReady($event)"
+    (gridSizeChanged)="onGridSizeChanged($event)" [overlayNoRowsTemplate]="dataEmptyText"
+    (rowClicked)="onRowClick($event)" (rowDoubleClicked)="onRowDoubleClick($event)" [isRowSelectable]="isRowSelectable"
+    [frameworkComponents]="frameworkComponents" [rowSelection]="rowSelection" [autoSizeAll]="autoSize"
+    [enableSorting]=true>
+  </ag-grid-angular>
+
+  <app-simple-paging *ngIf="!disablePageNo" [pageOnSize]="pageOnSize" [currentPage]="currentPage"
+    [totalCount]="itemCount" (currentPageEvent)="setPageNo($event)">
+  </app-simple-paging>
+
+  <ngx-spinner [bdColor]="'rgba(200,200,200,0.2)'" size="default" color="#00e8ba" type="ball-clip-rotate"
+    [name]="gridId" [fullScreen]="false"></ngx-spinner>
+</div>

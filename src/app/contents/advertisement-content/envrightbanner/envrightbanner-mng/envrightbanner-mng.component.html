@@ -1,0 +1,124 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">우측배너 정보</span>
+          </div>
+          <div class="table-scroll2">
+            <form role="form" #target="ngForm">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 40%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 40%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th class="required">배너 이름<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="3">
+                    <input type="text" name="name" class="input-text-box w-25"
+                           required="true" maxLength="30"
+                           [(ngModel)]="banner.name" />
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">이미지<label class="small-text-03 ml5">*</label><br>({{imageSize.width}}px * {{imageSize.height}}px)</th>
+                  <td colspan="3">
+                    <div class="flex-start">
+                      <!-- 파일 추가 플러스 버튼 -->
+                      <div *ngIf="!banner.fileSeq"
+                           class="thumbnail round" style="background-image:url('/assets/images/img-plus.png')"
+                           (click)="fileInput.click()">
+                      </div>
+
+                      <input #fileInput
+                             type="file" [accept]="constants.UPLOAD_FILE.accept.image" hidden
+                             (change)="uploadFile($event.target.files)">
+
+                      <span *ngIf="banner.filePath"
+                            class="thumbnail round"
+                            style="background-image:url('{{banner.filePath}}')"
+                            (click)="downloadFile()">
+                        <span class="thum-close"
+                              (click)="removeFile()"></span>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">사용 여부<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="3">
+                    <ng-container *ngFor="let usable of selectLists.bannerUsableCode; let index = index">
+                      <span class="radio-box mr20">
+                        <input type="radio" name="usable" class="radio-btn" id="{{'usable_' + index}}"
+                               [value]="usable.value" [checked]="usable.value == banner.usable"
+                               [(ngModel)]="banner.usable">
+                        <label for="{{'usable_' + index}}"><em></em>{{usable.name}}</label>
+                      </span>
+                    </ng-container>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">노출 기간<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="3">
+                    <input type="text" class="lc_01 startInputCal" mwlFlatpickr name="expoStartDate" readonly
+                           [altInput]="true"
+                           [altInputClass]="'form-control search-date-picker'"
+                           [altFormat]="'Y-m-d'"
+                           [locale]="datepickerLocal"
+                           [dateFormat]="'Ymd'"
+                           [(ngModel)]="banner.expoStartDate"
+                           [disableMobile]="false"
+                           [allowInput]="true"
+                           required="true" />
+
+                    ~
+
+                    <input type="text" class="lc_01 startInputCal" mwlFlatpickr name="expoEndDate" readonly
+                           [altInput]="true"
+                           [altInputClass]="'form-control search-date-picker'"
+                           [altFormat]="'Y-m-d'"
+                           [locale]="datepickerLocal"
+                           [dateFormat]="'Ymd'"
+                           [(ngModel)]="banner.expoEndDate"
+                           [disableMobile]="false"
+                           [allowInput]="true"
+                           required="true" />
+                  </td>
+                </tr>
+                <tr>
+                  <th>메모</th>
+                  <td colspan="3">
+                    <textarea name="memo" class="textarea-type-01" rows="2"
+                              maxlength="500"
+                              [(ngModel)]="banner.memo"></textarea>
+                  </td>
+                </tr>
+                <tr *ngIf="seq">
+                  <th>등록일시</th>
+                  <td>{{banner.regDate}}</td>
+                  <th>수정일시</th>
+                  <td>{{banner.modDate}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </form>
+          </div>
+        </div>
+
+        <div class="t-center mt20">
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="(possibleRegister(!seq)) || (possibleModify(null != seq))"
+                  [disabled]="target.form.invalid || !banner.fileSeq"
+                  (click)="saveBanner()" >저장</button>
+          <button type="button" class="btn btn-type-06" (click)="moveEnvrightbannerList('N')">목록</button>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>

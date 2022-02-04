@@ -1,0 +1,67 @@
+<div>
+  <div class="text-center">
+    <div class="ep-calendar-head">
+      <div class="arrow-prev" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+        (viewDateChange)="preNextWeekChange()">
+      </div>
+      <div>
+        <input #weekSelect id="weekSelect" class="lc_01" type="text" [(ngModel)]="viewDate" (value)="viewDate"
+          (ngModelChange)="onInputChange($event);" />
+      </div>
+      <div> </div>
+      <div class="arrow-next" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+        (viewDateChange)="preNextWeekChange()">
+      </div>
+    </div>
+
+    <div class="btn btn-outline-primary" mwlCalendarToday [(viewDate)]="viewDate">금주</div>
+  </div>
+
+  <br />
+
+  <div [ngSwitch]="view">
+    <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
+      [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
+      (eventClicked)="handleEvent('Clicked', $event.event)">
+    </mwl-calendar-month-view>
+
+    <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
+      [locale]="localeKo" [refresh]="refresh" [weekStartsOn]="weekStartsOn" [weekendDays]="weekendDays"
+      (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-week-view>
+
+    <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+      (eventClicked)="handleEvent('Clicked', $event.event)">
+    </mwl-calendar-day-view>
+  </div>
+
+  <br />
+
+  <div class="title-bar">
+    <span class="title-01">전체 일정 목록</span>
+    <button class="btn float-right" id="addBtn" (click)="addEvent()"></button>
+    <div class="clearfix"></div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>일정 요약</th>
+          <th>일정 구분</th>
+          <th>시작 일정</th>
+          <th>종료 일정</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let event of paramEvents, let k = index;">
+          <td>{{event.title}}</td>
+          <td>{{event.color.gubun}}</td>
+          <td>{{paramEvents[k].scheduleStart}}</td>
+          <td>{{paramEvents[k].scheduleEnd}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,4 @@
+<div class="main-scroll">
+  <app-sitepopup-list #sitepopupList (moveMngEvent) ="moveMngEventHandler($event)"  [ngClass]="{'dp-none': activePageType != pageType.LIST}" ></app-sitepopup-list>
+  <app-sitepopup-mng  #sitepopupMng  (moveListEvent)="moveListEventHandler($event)" [ngClass]="{'dp-none': activePageType != pageType.FORM}"></app-sitepopup-mng>
+</div>

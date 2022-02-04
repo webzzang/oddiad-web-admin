@@ -1,0 +1,4 @@
+<div class="main-scroll">
+  <app-envrightbanner-list #envrightbannerList (moveMngEvent) ="moveMngEventHandler($event)"  [ngClass]="{'dp-none': activePageType != pageType.LIST}" ></app-envrightbanner-list>
+  <app-envrightbanner-mng  #envrightbannerMng  (moveListEvent)="moveListEventHandler($event)" [ngClass]="{'dp-none': activePageType != pageType.FORM}"></app-envrightbanner-mng>
+</div>

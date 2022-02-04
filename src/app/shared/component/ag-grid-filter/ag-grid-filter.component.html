@@ -1,0 +1,67 @@
+
+<!-- class="ag-theme-balham" -->
+<div style="position: relative;">
+    <ag-grid-angular
+      #dataGrid
+      class="ag-theme-balham"
+      style="width: 100%; height: 100%;"
+      *ngIf="viewGrid"
+      [style.height.px]="gridHeight"
+      [headerHeight]="headerHeight"
+      [rowHeight]="rowHeight"
+      [rowData]="rowDataList"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [rowClassRules]="rowClassRules"
+      [rowSelection]="rowSelection"
+      (gridReady)="onGridReady($event)"
+      (gridSizeChanged)="onGridSizeChanged($event)"
+      [overlayNoRowsTemplate]="dataEmptyText"
+      (rowClicked)="onRowClick($event)" 
+      (rowDoubleClicked)="onRowDoubleClick($event)"
+      (selectionChanged)="onSelectionChanged($event)"
+      [isRowSelectable]="isRowSelectable"
+      [frameworkComponents]="frameworkComponents"
+      [autoSizeAll]="autoSize"
+      [enableSorting]="true"
+      [enablePivot]=false
+
+      [columnTypes]="columnTypes"
+      [enableFilter]="true"
+      [enableColResize]="true"
+      [suppressColumnVirtualisation]="true"
+      [suppressHorizontalScroll]="false"
+      >
+    </ag-grid-angular>
+    <!-- 
+
+
+      [showToolPanel]="suppressToolPanel"
+      toolPanel='columns'
+      enablePivot=false
+      [floatingFilter]="true"
+      [toolPanelSuppressValues]="true"
+      [toolPanelSuppressRowGroups]="true"
+      [toolPanelSuppressPivotMode]="true"
+
+
+
+      [floatingFilter]="true"
+      [toolPanelSuppressValues]="true"
+      [toolPanelSuppressRowGroups]="true"
+      [toolPanelSuppressPivotMode]="true"
+
+      [showToolPanel]="true"
+      [toolPanel]='columns'
+      [sideBar]='columns'
+     -->
+  <app-simple-paging
+    *ngIf="!disablePageNo"
+    [pageOnSize]="pageOnSize"
+    [currentPage]="currentPage"
+    [totalCount]="itemCount"
+    (currentPageEvent)="setPageNo($event)">
+  </app-simple-paging>
+
+  <ngx-spinner [bdColor]="'rgba(200,200,200,0.2)'" size="default" color="#00e8ba" type="ball-clip-rotate" [name]="gridId" [fullScreen] = "false"></ngx-spinner>
+</div>

@@ -1,0 +1,4 @@
+<div class="main-scroll">
+  <app-bundlepurchase-list #bundlepurchaseList (moveMngEvent) ="moveMngEventHandler($event)"  [ngClass]="{'dp-none': activePageType != pageType.LIST}" ></app-bundlepurchase-list>
+  <app-bundlepurchase-mng  #bundlepurchaseMng  (moveListEvent)="moveListEventHandler($event)" [ngClass]="{'dp-none': activePageType != pageType.FORM}"></app-bundlepurchase-mng>
+</div>

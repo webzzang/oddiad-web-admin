@@ -1,0 +1,26 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+
+        <search-box #searchBox
+                    [searchInfo]="search.info"
+                    (searchBtnHandler)="search.searchBtnHandler($event)"
+                    (clearBtnHandler)="search.clearBtnHandler($event)">
+        </search-box>
+
+        <div class="h10"></div>
+
+        <div>
+          <app-ag-grid #dataGrid
+                       [api]="grid.api" [isInitLoad]="grid.isInitLoad" [columnDefs]="grid.columnDefs"
+                       [defaultColDef]="grid.defaultColDef" [rowClassRules]="grid.rowClassRules"
+                       [multiRowSelection]="false">
+          </app-ag-grid>
+        </div>
+      </div>
+    </article>
+    <div class="h20"></div>
+  </section>
+</div>

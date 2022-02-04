@@ -1,0 +1,4 @@
+<div class="main-scroll">
+  <app-qna-list #qnaList (moveMngEvent) ="moveMngEventHandler($event)"  [ngClass]="{'dp-none': activePageType != pageType.LIST}"></app-qna-list>
+  <app-qna-mng  #qnaMng  (moveListEvent)="moveListEventHandler($event)" [ngClass]="{'dp-none': activePageType != pageType.FORM}"></app-qna-mng>
+</div>

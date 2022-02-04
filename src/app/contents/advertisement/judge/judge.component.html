@@ -1,0 +1,4 @@
+<div class="main-scroll">
+  <app-judge-list #judgeList (moveMngEvent) ="moveMngEventHandler($event)"  [ngClass]="{'dp-none': activePageType != pageType.LIST}"></app-judge-list>
+  <app-judge-mng  #judgeMng  (moveListEvent)="moveListEventHandler($event)" [ngClass]="{'dp-none': activePageType != pageType.FORM}"></app-judge-mng>
+</div>

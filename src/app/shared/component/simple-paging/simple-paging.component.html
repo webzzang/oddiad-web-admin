@@ -1,0 +1,31 @@
+<nav class="paging" aria-label="Page navigation">
+  <ul class="pagination">
+    <ng-container *ngIf="isView && pages.length > 0">
+      <li class="page-item" [ngClass]="{disabled: currentPage == 1, navigation: true}" (click)="setFirstPage()">
+        <a class="page-link" aria-label="Previous"><span class="pg-arrow-left pn2"></span></a>
+      </li>
+    </ng-container>
+    <ng-container *ngIf="isView && pages.length > 0">
+      <li class="page-item" [ngClass]="{disabled: currentPage == 1, navigation: true}" (click)="setPreviousPage()">
+        <a class="page-link" aria-label="Previous">
+          <span class="pg-arrow-left"></span>
+        </a>
+      </li>
+    </ng-container>
+    <li class="page-item wauto" >
+      <a class="page-link" [ngClass]="{active: currentPage == i}" (click)="setCurrentPage(i)" *ngFor="let i of pages">{{i}}</a>
+    </li>
+    <ng-container *ngIf="isView && pages.length > 0">
+      <li class="page-item" [ngClass]="{disabled: currentPage == maxPage, navigation: true}" (click)="setNextPage()">
+        <a class="page-link" aria-label="Next">
+          <span class="pg-arrow-right"></span>
+        </a>
+      </li>
+    </ng-container>
+    <ng-container *ngIf="isView && pages.length > 0">
+      <li class="page-item" [ngClass]="{disabled: currentPage == maxPage, navigation: true}" (click)="setLastPage()">
+        <a class="page-link" aria-label="Next"><span class="pg-arrow-right pn2"></span></a>
+      </li>
+    </ng-container>
+  </ul>
+</nav>

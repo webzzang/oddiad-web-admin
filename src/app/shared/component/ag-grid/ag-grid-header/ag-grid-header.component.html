@@ -1,0 +1,10 @@
+<!--
+<div [style.width.px]="header.column.actualWidth-24" class="box-row-nwr {{'flex-'+headerAlign}}">
+  {{header.displayName}} <img *ngIf="useSort && !excludeSort" src="assets/icons/{{sortOrderImg[sortOrder]}}.png" class="ag-grid-header-arrow" (click)="onSort()" />
+</div>
+-->
+
+<div [style.width.px]="header.column.actualWidth-24" class="box-row-nwr {{'flex-'+headerAlign}}">
+  {{header.displayName}} 
+  <img *ngIf="useSort && !excludeSort" src="assets/icons/{{sortOrderImg[sortOrder]}}.png"  (click)="onSort()" />
+</div>

@@ -1,0 +1,12 @@
+<div class="dim">
+  <div class="pop" style="max-width: 30rem;">
+    <div class="pop-header">
+      <h2>{{data.title}}</h2>
+      <i class="close" (click)="close()"></i>
+    </div>
+    <div class="pop-body" [innerHTML]="data.contents"></div>
+    <div class="pop-bottom t-center">
+      <button type="button" class="btn-01 w120 base-form" (click)="close()">확인</button>
+    </div>
+  </div>
+</div>

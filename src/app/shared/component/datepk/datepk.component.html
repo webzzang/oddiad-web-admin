@@ -1,0 +1,17 @@
+<ng-template [ngIf]="dateRange == false">
+  <input type="text" class="lc_01" mwlFlatpickr [altInput]="true" [altInputClass]="'form-control datepk'"
+    [locale]="locale" [placeholder]="placeHolder !== undefined && placeHolder !== undefined ? placeHolder : ''"
+    [altFormat]="'Y-m-d'" [dateFormat]="'Ymd'" [(ngModel)]="date" (ngModelChange)="onInputChange($event)"
+    [disableMobile]="true" />
+</ng-template>
+<ng-template [ngIf]="dateRange == true">
+  <input type="text" class="lc_01" mwlFlatpickr [altInput]="true" [altInputClass]="'form-control datepk'"
+    [locale]="locale" [placeholder]="sPlaceHolder !== undefined && sPlaceHolder !== undefined ? sPlaceHolder : ''"
+    [altFormat]="'Y-m-d'" [dateFormat]="'Ymd'" [(ngModel)]="sdate" (ngModelChange)="onInputChange1($event)"
+    [disableMobile]="true" />
+  ~
+  <input type="text" class="lc_01" mwlFlatpickr [altInput]="true" [altInputClass]="'form-control datepk'"
+    [locale]="locale" [placeholder]="ePlaceHolder !== undefined && ePlaceHolder !== undefined ? ePlaceHolder : ''"
+    [altFormat]="'Y-m-d'" [dateFormat]="'Ymd'" [(ngModel)]="edate" (ngModelChange)="onInputChange2($event)"
+    [disableMobile]="true" />
+</ng-template>

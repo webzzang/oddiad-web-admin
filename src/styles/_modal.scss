@@ -1,0 +1,53 @@
+.cdk-global-overlay-wrapper {
+  z-index: 1000;
+}
+
+//TODO 모달 위에 모달을 띄웠을 때 부모 모달들 비활성화(4개까지는 이상없도록 임시로 추가해놓은 것)
+.cdk-global-overlay-wrapper:nth-child(2) {
+  z-index: 1000;
+}
+.cdk-overlay-backdrop:nth-child(3) {
+  z-index: 1000;
+}
+.cdk-global-overlay-wrapper:nth-child(4) {
+  z-index: 1000;
+}
+.cdk-overlay-backdrop:nth-child(5) {
+  z-index: 99998;
+}
+.cdk-global-overlay-wrapper:nth-child(6) {
+  z-index: 99998;
+}
+.cdk-overlay-backdrop:nth-child(7) {
+  z-index: 99999;
+}
+.cdk-global-overlay-wrapper:nth-child(8) {
+  z-index: 99999;
+}
+
+
+
+/* 매터리얼 다이얼로그 */
+.mat-dialog-container {
+  padding: 0px !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+}
+
+.cdk-global-overlay-wrapper {
+  display: flex;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.288) !important;
+}
+
+.cdk-overlay-container, .cdk-global-overlay-wrapper {
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+  opacity: 1 !important;
+}

@@ -1,0 +1,31 @@
+<div class="login-wrap flex-center">
+
+  <div class="login-box">
+    <div class="login-right-wrap">
+      <ul>
+        <li><span class="small-text-01 mb10">Welcome to</span></li>
+        <li>
+          <h1 class="h1-text-01 mb40"><span class="mr20">Oddizone</span><span>Admin</span></h1>
+        </li>
+        <li>
+          <input type="text" class="form-control box-type-01 w100p" placeholder="아이디"
+                 maxlength="30"
+                 [(ngModel)]="id" (keyup.enter)="login()" /></li>
+        <li>
+          <input type="password" class="form-control box-type-01 w100p" placeholder="비밀번호"
+                 maxlength="20"
+                 [(ngModel)]="password" (keyup.enter)="login()" /></li>
+        <li class="t-left">
+          <input type="checkbox" id="member-id-save" class="checkbox-btn" checked
+                 [(ngModel)]="loginIdSave" />
+          <label for="member-id-save" class="small-text-02"><span>Remember id</span></label>
+        </li>
+        <li>
+          <button type="button" class="btn btn-type-01 mt20"
+                  (click)="login()">Login</button>
+        </li>
+        <li><span class="small-text-02">계정이 없으세요? 관리자에게 문의하세요.</span></li>
+      </ul>
+    </div>
+  </div>
+</div>

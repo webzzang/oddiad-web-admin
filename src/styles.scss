@@ -1,0 +1,164 @@
+@import './styles/flexbox';
+@import './styles/etc';
+@import './styles/modal';
+@import './styles/buttons';
+@import './styles/common';
+@import './styles/setup-add';
+
+
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+
+@import "~ag-grid-community/dist/styles/ag-theme-alpine.css";
+@import "~ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham-dark.css";
+
+
+//@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+
+.full-width {
+    width: 100% !important;
+}
+
+
+.cdk-global-scrollblock{position:fixed;width:100%;overflow-y:hidden !important} /* angular material css modal block scroll hidden */
+/* .cdk-global-scrollblock{position:fixed;width:100%;overflow-y:initial !important} */
+
+/** mat dialog 가 disableClose 옵션이 작동하지않아 직접 설정 */
+.cdk-overlay-container, .cdk-global-overlay-wrapper {
+  pointer-events: auto;
+}
+
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+	.cdk-overlay-pane{
+		z-index: 1 !important;
+	}
+} /* angular material internet explorer css malfunction  */
+
+/* angular material form field width setting  */
+.mat-form-field { width: calc(100% - 10px) !important; }
+.mat-form-field-infix { width: 100% !important; }
+
+// .cdk-visually-hidden{ visibility: hidden; }
+
+/* 매터리얼 다이얼로그 */
+.mat-dialog-container {
+	padding: 20px !important;
+	overflow: visible !important;
+}
+
+
+/** ag grid header 정렬 */
+.ag-header-cell-label {
+  justify-content: center;
+}
+.ag-row-selected {
+  background-color: #e2e1f5 !important;
+}
+.ag-row-hover {
+  background-color: #e2e1f5 !important;
+  cursor: pointer !important;
+}
+.ag-header-row {
+  background-color: #f3f3f7 !important;
+}
+.ag-header-cell {
+  font-size: 0.700rem;
+}
+.ag-cell {
+  font-size: 0.700rem;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  color: #6e6f89;
+}
+
+.ag-root-wrapper {
+  width: 100% !important;
+}
+
+.form-control[readonly] {
+  background-color: rgb(255, 255, 255);
+  opacity: 1;
+}
+
+.form-control {
+  color: #9299b0 !important;
+}
+
+.custom-select {
+  margin: 0 !important;
+  padding: 0.25rem 0.4rem !important;
+  padding-right: 1.4rem !important;
+  width: auto;
+  height: auto;
+  display: inline-block;
+  border-radius: 3px;
+  // width: 100% !important;
+  border: 1px solid #dcdce8;
+  // background-color: #fff;
+  color: #9299b0 !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: #fff url(assets/images/sel-off.png) no-repeat 97% 50% / 1rem auto !important;
+  cursor: pointer;
+  &:hover {
+    border: 1px solid #9090ab;
+  }
+}
+
+.custom-select-sm {
+  margin: 0 !important;
+  padding: 0.25rem 0.4rem !important;
+  padding-right: 1.4rem !important;
+  width: auto;
+  min-width: 55px;
+  height: auto;
+  display: inline-block;
+  border-radius: 3px;
+  // width: 100% !important;
+  border: 1px solid #dcdce8;
+  // background-color: #fff;
+  color: #9299b0 !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: #fff url(assets/images/sel-off.png) no-repeat 97% 50% / 1rem auto !important;
+  cursor: pointer;
+  &:hover {
+    border: 1px solid #9090ab;
+  }
+}
+
+.custom-radio-sm {
+  margin: 0 !important;
+  padding: 0.25rem 0.4rem !important;
+  padding-right: 1.4rem !important;
+  width: auto;
+  min-width: 55px;
+  height: auto;
+  display: inline-block;
+  color: #9299b0 !important;
+}
+
+.select-vsm {
+  @extend .h30-i;
+  font-size: 0.6rem !important;
+  padding: 0.1rem 0.3rem !important;
+  padding-right: 1.2rem !important;
+}
+
+.map-custom-overlay {
+  @extend .box-row-nwr;
+  @extend .flex-center-middle;
+  position: absolute !important;
+  left: 0;
+  top:0;
+  background-color: #fff;
+  border: 1px solid rgb(100, 100, 100);
+  z-index: 1000;
+  &:hover {
+    z-index: 9999;
+  }
+}

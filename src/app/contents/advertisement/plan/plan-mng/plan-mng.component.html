@@ -1,0 +1,294 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+
+        <form role="form" #target="ngForm">
+          <div class="mb20">
+            <div class="title-bar">
+              <span class="title-01 mr5">광고처 및 기기 정보</span>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 24%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th>광고처 이름</th>
+                  <td>{{info.mallName}}</td>
+                  <th>기기 이름</th>
+                  <td>{{info.deviceName || '-'}}</td>
+                  <th>기기 아이디</th>
+                  <td>{{info.deviceId || '-'}}</td>
+                </tr>
+                <tr>
+                  <th>위치(주소)</th>
+                  <td colspan="5">{{info.addr}} {{info.detailAddr}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div *ngIf="info.deviceId && 'PTT001' == info.channelType"
+               class="mb20">
+            <div class="title-bar">
+              <span class="title-01 mr5">광고 화면 분할 설정</span>
+                <button class="btn btn-type-03 sm-btn f-right"
+                        *ngIf="possibleModify()"
+                        [disabled]="target.form.invalid || !existsAllAdvFile"
+                        (click)="sendToEnvironment()">기기송출</button>
+                <label class="small-text-03 ml5 f-right" style="position: relative; top: 9px; right: 10px;">* 광고 파일 변경의 기기 송출은 익일 적용됩니다.</label>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 24%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th>화면 분할</th>
+                  <td>
+                    <div class="select-box-type2 w30p">
+                      <select name="displayDiv"
+                              [(ngModel)]="info.displayDiv">
+                        <option *ngFor="let option of selectLists.displayDivCode"
+                                [label]="option.name" [value]="option.value"></option>
+                      </select>
+                    </div>
+                  </td>
+                  <th>오른쪽 화면</th>
+                  <td>
+                    <span *ngIf="'divisions_1' == info.displayDiv">-</span>
+                    <div *ngIf="'divisions_2' == info.displayDiv || 'divisions_3' == info.displayDiv"
+                         class="select-box-type2 w30p">
+                      <select name="sideContentsType"
+                              [(ngModel)]="info.sideContentsType">
+                        <option *ngFor="let option of selectLists.sideDisplayServiceCode"
+                                [label]="option.name" [value]="option.value"></option>
+                      </select>
+                    </div>
+                  </td>
+                  <th>아래쪽 화면</th>
+                  <td>
+                    <span *ngIf="'divisions_3' == info.displayDiv">
+                      배너
+                      <input type="hidden" name="bottomContentsType" value="BDT001" [(ngModel)]="info.bottomContentsType">
+                    </span>
+                    <span *ngIf="'divisions_1' == info.displayDiv || 'divisions_2' == info.displayDiv">
+                      -
+                      <input type="hidden" name="bottomContentsType" value="" [(ngModel)]="info.bottomContentsType">
+                    </span>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div *ngIf="info.deviceId"
+               class="mb20">
+            <div class="title-bar">
+              <span class="title-01 mr5">현재 노출 광고</span>
+              <ng-container *ngIf="'PTT002' == info.channelType && 0 < nowExpos.length">
+                <button class="btn btn-type-03 sm-btn f-right"
+                        *ngIf="possibleModify()"
+                        [disabled]="target.form.invalid || !existsAllAdvFile"
+                        (click)="downloadExposeFiles()">현재노출광고 다운로드</button>
+                <label class="small-text-03 ml5 f-right" style="position: relative; top: 9px; right: 10px;">* 현재 편집중인 파일을 다운로드 합니다.</label>
+              </ng-container>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 15%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 35%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 20%;" />
+                </colgroup>
+                <tbody cdkDropList (cdkDropListDropped)="dragAdv(nowExpos, $event, true)">
+                <tr>
+                  <th>광고 이름</th>
+                  <td>{{defaultAdv.title}}</td>
+                  <th>광고파일</th>
+                  <td>
+                    <div class="flex-start">
+                      <span *ngFor="let file of defaultAdv.advFileList; let fileIndex = index"
+                            class="thumbnail round cdk-drag-item image-small"
+                            style="background-image:url('{{file.filePath}}')"
+                            cdkDrag
+                            (cdkDragDropped)="dragFile(defaultAdv.advFileList, $event)"
+                            (click)="downloadFile(file.fileSeq, file.fileName)">
+                      </span>
+                    </div>
+                  </td>
+                  <th>노출 기간</th>
+                  <td>
+                    0000-00-00 ~ 9999-12-31
+                    &nbsp; &nbsp;
+                    <input type="checkbox" class="checkbox-btn" name="defaultAdvExpo" id="defaultAdvExpo" value="true"
+                           [(ngModel)]="defaultAdv.expo" />
+                    <label class="small-text-04" for="defaultAdvExpo"><span></span>노출</label>
+                  </td>
+                </tr>
+                <tr *ngFor="let nowExpo of nowExpos; let index = index" cdkDrag>
+                  <th>광고 이름</th>
+                  <td>{{nowExpo.title}}</td>
+                  <th>광고파일</th>
+                  <td [class.caution]="0 == nowExpo.advFileList.length">
+                    <div class="flex-start">
+                    <span>
+                      <!-- 파일 추가 플러스 버튼 -->
+                      <div class="thumbnail round image-small" style="background-image:url('/assets/images/img-plus.png')"
+                           (click)="fileInput.click()">
+                      </div>
+
+                      <input #fileInput
+                             type="file" accept=".jpg, .jpeg, .png, video/*" hidden
+                             (change)="uploadFile(nowExpo.advFileList, nowExpo, $event.target.files, 0)">
+                    </span>
+                      <span cdkDropList cdkDropListOrientation="horizontal">
+                      <span *ngFor="let file of nowExpo.advFileList; let fileIndex = index"
+                            class="thumbnail round cdk-drag-item image-small"
+                            style="background-image:url('{{file.filePath}}')"
+                            cdkDrag
+                            (cdkDragDropped)="dragFile(nowExpo.advFileList, $event)"
+                            (click)="downloadFile(file.fileSeq, file.fileName)">
+                        <span class="thum-close"
+                              (click)="removeFile(nowExpo.advFileList, fileIndex)"></span>
+                      </span>
+                    </span>
+                    </div>
+                  </td>
+                  <th>노출 기간</th>
+                  <td>
+                      {{nowExpo.startDate}} ~ {{nowExpo.endDate}}
+                      &nbsp; &nbsp;
+                      <input type="checkbox" class="checkbox-btn" name="now-expo_{{index}}" id="now-expo_{{index}}" value="true"
+                             [(ngModel)]="nowExpo.expo" />
+                      <label class="small-text-04" for="now-expo_{{index}}"><span></span>노출</label>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div *ngIf="info.deviceId && 'PTT001' == info.channelType"
+               class="mb20">
+            <div class="title-bar">
+              <span class="title-01 mr5">최종 송출 정보</span>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 23%;" />
+                  <col style="width: 24%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th>최종 송출일자</th>
+                  <td>{{info.fcmRegDate}}</td>
+                  <th>송출결과</th>
+                  <td>{{info.pushResult}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="mb20" *ngIf="0 < waitExpos.length">
+            <div class="title-bar">
+              <span class="title-01 mr5">노출 대기 광고</span>
+              <ng-container *ngIf="'PTT002' == info.channelType && 0 < waitExpoFiles.length">
+                <button class="btn btn-type-03 sm-btn f-right"
+                        *ngIf="possibleModify()"
+                        [disabled]="target.form.invalid || !existsAllAdvFile"
+                        (click)="downloadWaitFiles()">노출대기광고 다운로드</button>
+                <label class="small-text-03 ml5 f-right" style="position: relative; top: 9px; right: 10px;">* 현재 편집중인 파일을 다운로드 합니다.</label>
+              </ng-container>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 15%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 35%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 20%;" />
+                </colgroup>
+                <tbody>
+                <tr *ngFor="let waitExpo of waitExpos; let index = index">
+                  <th>광고 이름</th>
+                  <td>{{waitExpo.title}}</td>
+                  <th>광고파일</th>
+                  <td [class.caution]="0 == waitExpo.advFileList.length">
+                    <div class="flex-start">
+                    <span>
+                      <!-- 파일 추가 플러스 버튼 -->
+                      <div class="thumbnail round image-small" style="background-image:url('/assets/images/img-plus.png')"
+                           (click)="fileInput.click()">
+                      </div>
+
+                      <input #fileInput
+                             type="file" accept=".jpg, .jpeg, .png, video/*" hidden
+                             (change)="uploadFile(waitExpo.advFileList, waitExpo, $event.target.files, 0)">
+                    </span>
+                      <span cdkDropList cdkDropListOrientation="horizontal">
+                      <span *ngFor="let file of waitExpo.advFileList; let fileIndex = index"
+                            class="thumbnail round cdk-drag-item image-small"
+                            style="background-image:url('{{file.filePath}}')"
+                            cdkDrag
+                            (cdkDragDropped)="dragFile(waitExpo.advFileList, $event)"
+                            (click)="downloadFile(file.fileSeq, file.fileName)">
+                        <span class="thum-close"
+                              (click)="removeFile(waitExpo.advFileList, fileIndex)"></span>
+                      </span>
+                    </span>
+                    </div>
+                  </td>
+                  <th>노출 기간</th>
+                  <td>
+                    {{waitExpo.startDate}} ~ {{waitExpo.endDate}}
+                    &nbsp; &nbsp;
+                    <input type="checkbox" class="checkbox-btn" name="wait-expo_{{index}}" value="true"
+                           [(ngModel)]="waitExpo.expo" />
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>
+
+        <div class="t-center mt20">
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="possibleModify()"
+                  [disabled]="target.form.invalid || !existsAllAdvFile"
+                  (click)="savePlan()">저장</button>
+          <button type="button" class="btn btn-type-06"
+                  (click)="movePlanList('N')">목록</button>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>

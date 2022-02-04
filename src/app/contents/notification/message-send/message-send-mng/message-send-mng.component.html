@@ -1,0 +1,200 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+
+        <span>
+          <form role="form" #target="ngForm">
+            <div class="mb20">
+              <div class="title-bar">
+                <span class="title-01 mr5"></span>
+              </div>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 15%;" />
+                  <col style="width: 85%;" />
+                </colgroup>
+                <tbody>
+                  <tr>
+                    <th class="required">발송 그룹명<label class="small-text-03 ml5">*</label></th>
+                    <td>
+                      <input type="text" name="name" class="input-text-box mr-1"
+                             required="true" maxLength="30"
+                             [(ngModel)]="message.name" />
+                      <button *ngIf="possibleRegister()"
+                              type="button" class="btn btn-type-03 sm-btn"
+                              (click)="openSearchGroupPopup()">조회</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="required">발송 대상<label class="small-text-03 ml5">*</label></th>
+                    <td>
+                      <ng-container *ngFor="let notificationTypeCode of selectLists.notificationTypeCode; let index = index">
+                        <span class="radio-box mr20">
+                          <input type="radio" name="{{'notificationTypeCode_' + index}}" class="radio-btn" id="{{'notificationTypeCode_' + index}}"
+                                 [value]="notificationTypeCode.value" [checked]="notificationTypeCode.value == message.targetCode"
+                                 [(ngModel)]="message.targetCode">
+                          <label for="{{'notificationTypeCode_' + index}}"><em></em>{{notificationTypeCode.name}}</label>
+
+                          <ng-container *ngIf="-1 < ['NTC005', 'NTC006', 'NTC007'].indexOf(notificationTypeCode.value) && message.targetCode == notificationTypeCode.value">
+                            <img src="/assets/images/ico-search.png" width="20px" height="20px"
+                                 class="ml-1" style="cursor: pointer;" (click)="openSearchPopup(notificationTypeCode.value)">
+                          </ng-container>
+                          <span *ngIf="'NTC008' == notificationTypeCode.value && message.targetCode == notificationTypeCode.value">
+                            <input #phoneNumber
+                                   type="text" name="phoneNumber" class="input-text-box ml-1 mr-1" style="height: 1.3rem"
+                                   maxLength="11"
+                                   [(ngModel)]="phoneNumberInput.value"
+                                   (keyup.enter)="appendPhoneNumber()" />
+                            <button *ngIf="possibleRegister()"
+                                    type="button" class="btn btn-type-03 sm-btn" style="height: 1.7rem"
+                                    (click)="appendPhoneNumber()">추가</button>
+                          </span>
+                        </span>
+                      </ng-container>
+                    </td>
+                  </tr>
+                  <tr *ngIf="-1 < ['NTC005', 'NTC006', 'NTC007', 'NTC008'].indexOf(message.targetCode)">
+                    <th>발송 대상 목록</th>
+                    <td>
+                      <div class="table-box">
+                        <div style="min-width: 900px !important; display: flex;">
+                          <ng-container *ngIf="'NTC005' == message.targetCode">
+                            <ng-container *ngFor="let oddizone of message.oddizoneList; let index = index">
+                              <div>
+                                <input type="checkbox" class="ml5" style="opacity:0; width: 1px;"
+                                       id="{{'oddizone_' + oddizone.partnerSeq}}" name="{{'oddizone_' + oddizone.partnerSeq}}"
+                                       (click)="removeItemWithIndex(message.oddizoneList, index)"/>
+                                <label for="{{'oddizone_' + oddizone.partnerSeq}}" class="small-text-04" style="cursor: pointer;">
+                                  <i class="fa fa-times" aria-hidden="true"></i>
+                                  {{oddizone.partnerName}}</label>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                          <ng-container *ngIf="'NTC006' == message.targetCode">
+                            <ng-container *ngFor="let subway of message.subwayList; let index = index">
+                              <div>
+                                <input type="checkbox" class="ml5" style="opacity:0; width: 1px;"
+                                       id="{{'subway_' + subway.partnerSeq}}" name="{{'subway_' + subway.partnerSeq}}"
+                                       (click)="removeItemWithIndex(message.subwayList, index)"/>
+                                <label for="{{'subway_' + subway.partnerSeq}}" class="small-text-04" style="cursor: pointer;">
+                                  <i class="fa fa-times" aria-hidden="true"></i>
+                                  {{subway.partnerName}}</label>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                          <ng-container *ngIf="'NTC007' == message.targetCode">
+                            <ng-container *ngFor="let member of message.memberIdList; let index = index">
+                              <div>
+                                <input type="checkbox" class="ml5" style="opacity:0; width: 1px;"
+                                       id="{{'member_' + member.memberId}}" name="{{'member_' + member.memberId}}"
+                                       (click)="removeItemWithIndex(message.memberIdList, index)"/>
+                                <label for="{{'member_' + member.memberId}}" class="small-text-04" style="cursor: pointer;">
+                                  <i class="fa fa-times" aria-hidden="true"></i>
+                                  {{member.memberName}}</label>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                          <ng-container *ngIf="'NTC008' == message.targetCode">
+                            <ng-container *ngFor="let phoneNumber of message.sendPhoneNumberList; let index = index">
+                              <span>
+                                <input type="checkbox" class="ml5" style="opacity:0; width: 1px;"
+                                       id="{{'phoneNumber_' + index}}" name="{{'phoneNumber_' + index}}"
+                                       (click)="removeItemWithIndex(message.sendPhoneNumberList, index)"/>
+                                <label for="{{'phoneNumber_' + index}}" class="small-text-04" style="cursor: pointer;">
+                                  <i class="fa fa-times" aria-hidden="true"></i>
+                                  {{phoneNumber | phoneNumber}}</label>
+                              </span>
+                            </ng-container>
+                          </ng-container>
+
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="required">발송 예약 설정<label class="small-text-03 ml5">*</label></th>
+                    <td>
+                      <ng-container *ngFor="let messageSendTypeCode of selectLists.messageSendTypeCode; let index = index">
+                        <span class="radio-box mr20">
+                          <input type="radio" name="messageSendType" class="radio-btn" id="{{'messageSendType_' + index}}"
+                                 [value]="messageSendTypeCode.value"
+                                 [checked]="messageSendTypeCode.value == message.messageSendType"
+                                 [(ngModel)]="message.messageSendType">
+                          <label for="{{'messageSendType_' + index}}"><em></em>{{messageSendTypeCode.name}}</label>
+                        </span>
+                      </ng-container>
+
+                      <ng-container *ngIf="'MST002' == message.messageSendType">
+                        <span class="mt-2">
+                          <input type="text" class="lc_01 startInputCal" mwlFlatpickr name="reservationDate" readonly
+                                 [altInput]="true"
+                                 [altInputClass]="'form-control search-date-picker'"
+                                 [altFormat]="'Y-m-d'"
+                                 [locale]="datepickerLocal"
+                                 [dateFormat]="'Ymd'"
+                                 [(ngModel)]="message.reservationDate"
+                                 [disableMobile]="false"
+                                 [allowInput]="true"
+                                 required="true" />
+
+                          <div class="select-box-type2 w100 ml-1">
+                            <select name="reservationHour" [(ngModel)]="message.reservationHour" required="true">
+                              <option *ngFor="let hour of selectLists.reservationHour"
+                                      [ngValue]="hour">{{hour}}</option>
+                            </select>
+                          </div>
+                          <div class="select-box-type2 w100 ml-1">
+                            <select name="reservationMin" [(ngModel)]="message.reservationMin" required="true">
+                              <option *ngFor="let min of selectLists.reservationMin"
+                                      [ngValue]="min">{{min}}</option>
+                            </select>
+                          </div>
+                        </span>
+                      </ng-container>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="required">광고성/정보성 구분<label class="small-text-03 ml5">*</label></th>
+                    <td>
+                      <ng-container *ngFor="let messageTypeCode of selectLists.messageTypeCode; let index = index">
+                        <span class="radio-box mr20">
+                          <input type="radio" name="messageTypeCode" class="radio-btn" id="{{'messageTypeCode_' + index}}"
+                                 [value]="messageTypeCode.value"
+                                 [checked]="messageTypeCode.value == message.messageTypeCode"
+                                 [(ngModel)]="message.messageTypeCode">
+                          <label for="{{'messageTypeCode_' + index}}"><em></em>{{messageTypeCode.name}}</label>
+                        </span>
+                      </ng-container>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="required">내용<label class="small-text-03 ml5">*</label></th>
+                    <td>
+                      <textarea name="contents" class="textarea-type-01 w-100"
+                                required="true" maxlength="500" rows="15"
+                                placeholder="발송하고자 하는 내용을 입력해주세요. 입력 내용이 90byte가 넘으면 LMS로 변경됩니다."
+                                [(ngModel)]="message.contents"></textarea>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+
+          <div class="t-center mt20">
+            <button type="button" class="btn btn-type-04"
+                    *ngIf="possibleRegister()"
+                    [disabled]="target.form.invalid || isInvalid()"
+                    (click)="sendMessage()">발송</button>
+            <button type="button" class="btn btn-type-06"
+                    (click)="init()">초기화</button>
+          </div>
+        </span>
+      </div>
+    </article>
+  </section>
+</div>

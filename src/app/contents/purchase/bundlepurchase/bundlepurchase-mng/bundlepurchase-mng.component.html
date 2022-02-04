@@ -1,0 +1,163 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+
+        <form role="form" #target="ngForm">
+          <div class="mb20">
+            <div class="title-bar">
+              <span class="title-01 mr5">묶음상품 정보</span>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 90%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th class="required">상품 이름<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <input type="text" name="name" class="input-text-box"
+                           required="true" maxLength="20"
+                           [(ngModel)]="product.name" />
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">상품 구성<label class="small-text-03 ml5">*</label>
+                  </th>
+                  <td>
+                    <button *ngIf="possibleRegister(!seq) || possibleModify(seq)"
+                            class="btn btn-type-03 sm-btn f-left"
+                            (click)="openSearchPartnerPopup()">광고처 검색</button>
+                    <div class="table-box">
+                      <div style="min-width: 900px !important; display: flex;">
+                        <ng-container *ngFor="let partner of partners; let index = index">
+                          <div>
+                            <input type="checkbox" class="ml5" style="opacity:0;"
+                                   id="{{'partner_' + partner.partnerSeq}}" name="{{'partner_' + partner.partnerSeq}}"
+                                   (click)="removePartner(index)"/>
+                            <label for="{{'partner_' + partner.partnerSeq}}" class="small-text-04" style="cursor: pointer;">
+                              <i class="fa fa-times" aria-hidden="true"></i>
+                              {{partner.mallName}}</label>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">
+                    <span>
+                      상품 가격<br>(VAT 별도)
+                    </span>
+                    <span>
+                      <label class="small-text-03 ml5">*</label>
+                    </span>
+                  <td>
+                    <input type="text" name="priceLabel" class="input-text-box t-right"
+                           required="true" maxlength="11"
+                           [(ngModel)]="product.priceLabel"
+                           [textMask]="{mask: constants.MASK.number}"
+                           (change)="setPrice($event.target.value)"/> 원/월
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">소개글<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <textarea name="contents" class="textarea-type-01" rows="5"
+                              required="true" maxlength="500"
+                              [(ngModel)]="product.description"></textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">소개 이미지<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <div class="flex-start">
+                    <span>
+                      <!-- 파일 추가 플러스 버튼 -->
+                      <div class="thumbnail round" style="background-image:url('/assets/images/img-plus.png')"
+                           (click)="fileInput.click()">
+                      </div>
+
+                      <input #fileInput
+                             type="file" [accept]="constants.UPLOAD_FILE.accept.image" hidden
+                             (change)="uploadFile($event.target.files, 0)">
+                    </span>
+                      <span cdkDropList cdkDropListOrientation="horizontal">
+                      <span *ngFor="let file of files; let index = index"
+                            class="thumbnail round cdk-drag-item"
+                            style="background-image:url('{{file.path}}')"
+                            cdkDrag
+                            (cdkDragDropped)="dragFile($event)"
+                            (click)="downloadFile(file.fileSeq, file.name)">
+                        <span class="thum-close"
+                              (click)="removeFile(index)"></span>
+                      </span>
+                    </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>배지</th>
+                  <td>
+                    <div class="select-box-type2">
+                      <select name="badgeCode" [(ngModel)]="product.badgeCode">
+                        <option *ngFor="let badge of selectLists.badgeCode" [label]="badge.name" [value]="badge.value"></option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">광고 사례 노출<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <ng-container *ngFor="let expo of selectLists.expoCode; let index = index">
+                      <span class="radio-box mr20">
+                        <input type="radio" name="advCaseExpo" class="radio-btn" id="{{'expo_' + index}}"
+                               [value]="expo.value" [checked]="expo.value == product.advCaseExpo"
+                               [(ngModel)]="product.advCaseExpo">
+                        <label for="{{'expo_' + index}}"><em></em>{{expo.name}}</label>
+                      </span>
+                    </ng-container>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">운영 여부<label class="small-text-03 ml5">*</label></th>
+                  <td>
+                    <ng-container *ngFor="let operation of selectLists.operationCode; let index = index">
+                      <span class="radio-box mr20">
+                        <input type="radio" name="operation" class="radio-btn" id="{{'operation_' + index}}"
+                               [value]="operation.value" [checked]="operation.value == product.operation"
+                               [(ngModel)]="product.operation">
+                        <label for="{{'operation_' + index}}"><em></em>{{operation.name}}</label>
+                      </span>
+                    </ng-container>
+                  </td>
+                </tr>
+                <tr>
+                  <th>메모</th>
+                  <td>
+                    <textarea name="memo" class="textarea-type-01" rows="5"
+                              maxlength="500"
+                              [(ngModel)]="product.memo"></textarea>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>
+
+        <div class="t-center mt20">
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="possibleRegister(!seq) || possibleModify(seq)"
+                  [disabled]="target.form.invalid || 0 == partners.length || 0 == files.length"
+                  (click)="saveProduct()">저장</button>
+          <button type="button" class="btn btn-type-06"
+                  (click)="moveBundleProductList('N')">목록</button>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>

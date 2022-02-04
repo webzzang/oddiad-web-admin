@@ -1,0 +1,126 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">1:1 문의</span>
+          </div>
+          <div class="table-scroll2">
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+                <col style="width: 10%;" />
+                <col style="width: 23%;" />
+                <col style="width: 10%;" />
+                <col style="width: 24%;" />
+              </colgroup>
+              <tbody>
+              <tr>
+                <th>고객 ID (이메일)</th>
+                <td>{{qna.email}}</td>
+                <th>이름</th>
+                <td>{{qna.name}}</td>
+                <th>전화번호</th>
+                <td>{{qna.phoneNumber | phoneNumber}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="mb20">
+          <div class="title-bar">
+            <span class="title-01 mr5">문의 내용</span>
+          </div>
+          <div class="table-scroll2">
+            <table class="tbl03">
+              <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 40%;" />
+                <col style="width: 10%;" />
+                <col style="width: 40%;" />
+              </colgroup>
+              <tbody>
+              <tr>
+                <th>제목</th>
+                <td colspan="3">{{qna.title}}</td>
+              </tr>
+              <tr>
+                <th>문의유형</th>
+                <td colspan="3">{{qna.inquiryTypeCodeName}}</td>
+              </tr>
+              <tr>
+                <th>내용</th>
+                <td colspan="3">
+                  <span style="display: inline-block; width: 100%; height: 180px; overflow-y: scroll" [innerHTML]="qna.contents"></span>
+                </td>
+              </tr>
+              <tr>
+                <th>첨부파일</th>
+                <td colspan="3">
+                  <u style="cursor: pointer"
+                     (click)="downloadFile()">{{qna.fileName}}</u>
+                </td>
+              </tr>
+              <tr>
+                <th>상태</th>
+                <td>{{qna.answerType}}</td>
+                <th>문의 접수일</th>
+                <td>{{qna.regDate}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <form role="form" #target="ngForm">
+          <div class="mb20">
+            <div class="title-bar">
+              <span class="title-01 mr5">답변 내용</span>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 40%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 40%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th>등록자</th>
+                  <td>{{qna.answerRegId}}</td>
+                  <th>답변 등록일</th>
+                  <td>{{qna.answerRegDate}}</td>
+                </tr>
+                <tr>
+                  <th>답변</th>
+                  <td colspan="3">
+                    <textarea name="contents" class="textarea-type-01" rows="5"
+                              required="true" maxlength="1000"
+                              [readOnly]="!(possibleRegister(!parseBoolean(seq)) || possibleModify(parseBoolean(seq)))"
+                              [(ngModel)]="qna.answer"></textarea>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>
+
+        <div class="t-center mt20">
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="possibleRegister(parseBoolean(seq)) || possibleModify(!parseBoolean(seq))"
+                  [disabled]="target.form.invalid"
+                  (click)="saveQna()">저장</button>
+          <button type="button" class="btn btn-type-06"
+                  (click)="moveQnaList('N')">목록</button>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>

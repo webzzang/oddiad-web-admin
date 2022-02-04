@@ -1,0 +1,19 @@
+<div class="top-contents">
+  <div class="a-top">
+    <div class="f-right">
+      <img src="assets/images/people/img-profile-default.png" alt="관리자사진" class="img-thumbnail s40">
+      <div class="dropdown">
+        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span value="님">{{profile.name}}</span></button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item pointer"
+             (click)="openPasswordMng()">비밀번호 변경</a>
+          <a class="dropdown-item pointer"
+             (click)="openProfileMng()">내 정보 변경</a>
+          <a class="dropdown-item pointer" href="https://analytics.google.com/analytics/web" target="_blank">구글 애널리틱스</a>
+          <a class="dropdown-item pointer"
+             (click)="logout()">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

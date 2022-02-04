@@ -1,0 +1,30 @@
+.error-container.r_error {
+  height: 395px;
+  font-family: NotoS_R;
+  text-align: center !important;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+}
+
+.error-container.r_error .error_tit {
+  margin: 0 !important;
+  padding-top: 35px !important;
+  padding-bottom: 20px !important;
+  font-family: NotoS_R;
+  font-size: 39px;
+  line-height: 1;
+  color: #000;
+}
+
+.error-container.r_error .error_message {
+  padding-bottom: 45px;
+  font-size: 20px;
+  color: #666;
+  line-height: 33px;
+  letter-spacing: -1px;
+  margin: 0;
+}

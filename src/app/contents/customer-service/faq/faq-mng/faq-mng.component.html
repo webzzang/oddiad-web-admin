@@ -1,0 +1,99 @@
+<div class="main-scroll-content">
+  <section>
+    <article>
+      <div class="article-box table-wrap">
+        <app-content-top></app-content-top>
+
+        <form role="form" #target="ngForm">
+          <div class="mb20">
+            <div class="title-bar">
+              <span class="title-01 mr5">FAQ 정보</span>
+            </div>
+            <div class="table-scroll2">
+              <table class="tbl03">
+                <colgroup>
+                  <col style="width: 10%;" />
+                  <col style="width: 40%;" />
+                  <col style="width: 10%;" />
+                  <col style="width: 40%;" />
+                </colgroup>
+                <tbody>
+                <tr>
+                  <th class="required">전시<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="3">
+                    <ng-container *ngFor="let expo of selectLists.expoCode; let index = index">
+                      <span class="radio-box mr20">
+                        <input type="radio" name="expo" class="radio-btn" id="{{'expo_' + index}}"
+                               [value]="expo.value" [checked]="expo.value == faq.expo"
+                               [(ngModel)]="faq.expo">
+                        <label for="{{'expo_' + index}}"><em></em>{{expo.name}}</label>
+                      </span>
+                    </ng-container>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">분류<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="3">
+                    <div class="select-box-type2 w30p">
+                      <select name="categoryCode" [(ngModel)]="faq.categoryCode"
+                              required="true">
+                        <option *ngFor="let option of selectLists.categoryCode" [label]="option.name" [value]="option.value"></option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">제목<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="3">
+                    <input type="text" name="title" class="input-text-box w30p"
+                           required="true" minLength="1" maxLength="30"
+                           [(ngModel)]="faq.title" />
+                  </td>
+                </tr>
+                <tr>
+                  <th class="required">내용<label class="small-text-03 ml5">*</label></th>
+                  <td colspan="3">
+                    <textarea name="contents" class="textarea-type-01" rows="5"
+                              required="true" maxlength="1000"
+                              [readOnly]="!(possibleRegister(!parseBoolean(seq)) || possibleModify(parseBoolean(seq)))"
+                              [(ngModel)]="faq.contents"></textarea>
+                  </td>
+                </tr>
+                <tr *ngIf="seq">
+                  <th>등록자</th>
+                  <td>
+                    {{faq.regId}}
+                  </td>
+                  <th>등록자</th>
+                  <td>
+                    {{faq.regDate}}
+                  </td>
+                </tr>
+                <tr *ngIf="seq">
+                  <th>최종수정자</th>
+                  <td>
+                    {{faq.modId}}
+                  </td>
+                  <th>최종수정일시</th>
+                  <td>
+                    {{faq.modDate}}
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>
+
+        <div class="t-center mt20">
+          <button type="button" class="btn btn-type-04"
+                  *ngIf="possibleRegister(!parseBoolean(seq)) || possibleModify(parseBoolean(seq))"
+                  [disabled]="target.form.invalid"
+                  (click)="saveFaq()">저장</button>
+          <button type="button" class="btn btn-type-06"
+                  (click)="moveFaqList('N')">목록</button>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>
